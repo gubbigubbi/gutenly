@@ -1,0 +1,34 @@
+/**
+ * #.# Editor Styles
+ *
+ * CSS for just Backend enqueued after style.scss
+ * which makes it higher in priority.
+ */
+.position-relative {
+    position: relative;
+}
+
+.wp-block-cgb-block-text-and-image  {
+    button {
+
+        &.remove-image {
+            background-color: red;
+            border: 2px red solid;
+            padding: 5px 5px 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: .9;
+
+            svg {
+                background: red;
+                fill: white;
+            }
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+
+    }
+}

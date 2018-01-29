@@ -1,0 +1,25 @@
+/**
+ * #.# Styles
+ *
+ * CSS for both Frontend+Backend.
+ */
+ .row {
+  margin-left: -$grid-gutter-width;
+  margin-right: -$grid-gutter-width;
+  > * {
+    padding-left: $grid-gutter-width;
+    padding-right: $grid-gutter-width;
+  }
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+}
+.col-6 {
+  width: 50%;
+}
+// scoped styles
+.wp-block-cgb-block-text-and-image  {
+  
+}
