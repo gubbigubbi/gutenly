@@ -20,18 +20,18 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0.0
  */
-function text_and_image_cgb_block_assets() {
+function gutenly_cgb_block_assets() {
 	// Styles.
 	wp_enqueue_style(
-		'text_and_image-cgb-style-css', // Handle.
+		'gutenly-cgb-style-css', // Handle.
 		plugins_url( 'dist/blocks.style.build.css', dirname( __FILE__ ) ), // Block style CSS.
 		array( 'wp-blocks' ) // Dependency to include the CSS after it.
 		// filemtime( plugin_dir_path( __FILE__ ) . 'editor.css' ) // Version: filemtime — Gets file modification time.
 	);
-} // End function text_and_image_cgb_block_assets().
+} // End function gutenly_cgb_block_assets().
 
 // Hook: Frontend assets.
-add_action( 'enqueue_block_assets', 'text_and_image_cgb_block_assets' );
+add_action( 'enqueue_block_assets', 'gutenly_cgb_block_assets' );
 
 /**
  * Enqueue Gutenberg block assets for backend editor.
@@ -42,10 +42,10 @@ add_action( 'enqueue_block_assets', 'text_and_image_cgb_block_assets' );
  *
  * @since 1.0.0
  */
-function text_and_image_cgb_editor_assets() {
+function gutenly_cgb_editor_assets() {
 	// Scripts.
 	wp_enqueue_script(
-		'text_and_image-cgb-block-js', // Handle.
+		'gutenly-cgb-block-js', // Handle.
 		plugins_url( '/dist/blocks.build.js', dirname( __FILE__ ) ), // Block.build.js: We register the block here. Built with Webpack.
 		array( 'wp-blocks', 'wp-i18n', 'wp-element' ) // Dependencies, defined above.
 		// filemtime( plugin_dir_path( __FILE__ ) . 'block.js' ) // Version: filemtime — Gets file modification time.
@@ -53,12 +53,12 @@ function text_and_image_cgb_editor_assets() {
 
 	// Styles.
 	wp_enqueue_style(
-		'text_and_image-cgb-block-editor-css', // Handle.
+		'gutenly-cgb-block-editor-css', // Handle.
 		plugins_url( 'dist/blocks.editor.build.css', dirname( __FILE__ ) ), // Block editor CSS.
 		array( 'wp-edit-blocks' ) // Dependency to include the CSS after it.
 		// filemtime( plugin_dir_path( __FILE__ ) . 'editor.css' ) // Version: filemtime — Gets file modification time.
 	);
-} // End function text_and_image_cgb_editor_assets().
+} // End function gutenly_cgb_editor_assets().
 
 // Hook: Editor assets.
-add_action( 'enqueue_block_editor_assets', 'text_and_image_cgb_editor_assets' );
+add_action( 'enqueue_block_editor_assets', 'gutenly_cgb_editor_assets' );

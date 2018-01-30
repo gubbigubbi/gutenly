@@ -1,10 +1,10 @@
 <?php
 /**
- * Plugin Name: text-and-image — CGB Gutenberg Block Plugin
- * Plugin URI: https://github.com/ahmadawais/create-guten-block/
+ * Plugin Name: Gutenly
+ * Plugin URI: https://github.com/gubbigubbi/gutenly
  * Description: Gutenly - a collection of must have GB blocks
  * Author: gubbigubbi
- * Author URI: https://AhmadAwais.com/
+ * Author URI: https://github.com/gubbigubbi/
  * Version: 1.0.0
  * License: GPL2+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
