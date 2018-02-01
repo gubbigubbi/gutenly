@@ -4,11 +4,10 @@
  * CSS for just Backend enqueued after style.scss
  * which makes it higher in priority.
  */
-.position-relative {
-    position: relative;
-}
+ .image--circle {
+     border-radius: 100%;
+ }
 
-.wp-block-cgb-block-text-and-image  {
     button {
 
         &.remove-image {
@@ -31,4 +30,7 @@
         }
 
     }
+
+.wp-block-cgb-block-text-and-image  {
+
 }

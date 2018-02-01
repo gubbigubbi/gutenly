@@ -43,6 +43,9 @@ registerBlockType("cgb/block-features-list", {
 			},
 			default: [[], [], [], []]
 		},
+		imgID: {
+			type: "number"
+		},
 		columns: {
 			type: "number",
 			default: 4
@@ -51,7 +54,15 @@ registerBlockType("cgb/block-features-list", {
 
 	// The "edit" property must be a valid function.
 	edit({ attributes, setAttributes, className, focus, setFocus }) {
-		const { content, columns } = attributes;
+		const { content, images, columns, imgID } = attributes;
+
+		const onSelectImage = img => {
+			setAttributes({
+				imgID: img.id,
+				imgURL: img.url,
+				imgAlt: img.alt
+			});
+		};
 
 		return (
 			<div className={className}>
@@ -65,9 +76,9 @@ registerBlockType("cgb/block-features-list", {
 								onChange={nextContent => {
 									setAttributes({
 										content: [
-											...content.slice(0, index),
-											{ children: nextContent },
-											...content.slice(index + 1)
+											...content.slice(0, index), // get the array before
+											{ children: nextContent }, // add the content in here
+											...content.slice(index + 1) // get the array after
 										]
 									});
 								}}
