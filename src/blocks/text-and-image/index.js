@@ -9,7 +9,13 @@ import icons from "../icons";
  */
 
 const { __ } = wp.i18n; // Import __() from wp.i18n
-const { registerBlockType, Editable, MediaUpload, BlockControls } = wp.blocks; // Import registerBlockType() from wp.blocks as well as Editable so we can use TinyMCE
+const {
+	registerBlockType,
+	Editable,
+	MediaUpload,
+	BlockControls,
+	InnerBlocks
+} = wp.blocks; // Import registerBlockType() from wp.blocks as well as Editable so we can use TinyMCE
 const { Button, Toolbar, Tooltip, Dashicon } = wp.components;
 /**
  * Register: aa Gutenberg Block.
@@ -106,15 +112,7 @@ registerBlockType("cgb/block-text-and-image", {
 					}}
 				>
 					<div className="col-6 message-body">
-						<Editable
-							tagName="div"
-							multiline="p"
-							placeholder={__("Add your custom text")}
-							onChange={onChangeMessage}
-							value={props.attributes.message}
-							focus={props.focus}
-							onFocus={props.setFocus}
-						/>
+						<InnerBlocks />
 					</div>
 					<div className="col-6">
 						{!props.attributes.imgID ? (
@@ -158,7 +156,9 @@ registerBlockType("cgb/block-text-and-image", {
 		return (
 			<div className={props.className}>
 				<div className="flex row" style={{ flexDirection: colOrder }}>
-					<div className="col-6 message-body">{props.attributes.message}</div>
+					<div className="col-6 message-body">
+						<InnerBlocks.Content />
+					</div>
 					<div className="col-6">
 						<img src={props.attributes.imgURL} alt={props.attributes.imgAlt} />
 					</div>
