@@ -22,4 +22,5 @@ import "./blocks/editor.scss";
 import "./blocks/text-and-image";
 //import "./blocks/features-list";
 import "./blocks/team-member";
+import "./blocks/section";
 // TODO: spacer block

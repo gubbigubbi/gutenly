@@ -26,7 +26,7 @@ const { Button, Toolbar, Tooltip, Dashicon } = wp.components;
 registerBlockType("cgb/block-team-member", {
 	// Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
 	title: __("Team Member", "CGB"), // Block title.
-	icon: "image-flip-horizontal", // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
+	icon: "nametag", // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
 	category: "common", // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
 	keywords: [__("team"), __("Team Member")],
 	attributes: {
@@ -63,7 +63,6 @@ registerBlockType("cgb/block-team-member", {
 
 	// The "edit" property must be a valid function.
 	edit: props => {
-
 		// This control which editable will be focused and falls back to the title editable
 		const focusedEditable = props.focus
 			? props.focus.editable || "title"
@@ -86,16 +85,16 @@ registerBlockType("cgb/block-team-member", {
 
 		const onSelectImage = img => {
 			// fetch the thumb details
-			const image = new wp.api.models.Media( {id: img.id} ).fetch().done(res => {
-				const thumb = res.media_details.sizes['square-thumb-small'];
-
-				props.setAttributes({
-					imgID: img.id,
-					imgURL: thumb.source_url,
-					imgAlt: img.alt
+			const image = new wp.api.models.Media({ id: img.id })
+				.fetch()
+				.done(res => {
+					const thumb = res.media_details.sizes["square-thumb-small"];
+					props.setAttributes({
+						imgID: img.id,
+						imgURL: thumb.source_url,
+						imgAlt: img.alt
+					});
 				});
-			});
-
 		};
 		const onRemoveImage = () => {
 			props.setAttributes({
@@ -105,26 +104,62 @@ registerBlockType("cgb/block-team-member", {
 			});
 		};
 
-		return <div className={props.className}>
+		return (
+			<div className={props.className}>
 				<div className="team-member__img">
-					{!attributes.imgID ? <MediaUpload onSelect={onSelectImage} type="image" value={attributes.imgID} render={({ open }) => <Button className="components-button button button-large" onClick={open}>
+					{!attributes.imgID ? (
+						<MediaUpload
+							onSelect={onSelectImage}
+							type="image"
+							value={attributes.imgID}
+							render={({ open }) => (
+								<Button
+									className="components-button button button-large"
+									onClick={open}
+								>
 									Open Media Library
-								</Button>} /> : <div className="position-relative">
-							<img className="image--circle" src={attributes.imgURL} alt={attributes.imgAlt} />
-							{props.focus ? <Button className="remove-image" onClick={onRemoveImage}>
+								</Button>
+							)}
+						/>
+					) : (
+						<div className="position-relative">
+							<img
+								className="image--circle"
+								src={attributes.imgURL}
+								alt={attributes.imgAlt}
+							/>
+							{props.focus ? (
+								<Button className="remove-image" onClick={onRemoveImage}>
 									{icons.remove}
-								</Button> : null}
-						</div>}
+								</Button>
+							) : null}
+						</div>
+					)}
 				</div>
 				<div className="team-member__content">
-					
-						<Editable tagName="h3" placeholder={__("Add a title for the team member")} onChange={onChangeTitle} value={attributes.title} focus={focusedEditable === "title"} onFocus={onFocusTitle} />
-				
+					<Editable
+						tagName="h3"
+						placeholder={__("Add a title for the team member")}
+						onChange={onChangeTitle}
+						value={attributes.title}
+						focus={focusedEditable === "title"}
+						onFocus={onFocusTitle}
+					/>
+
 					<div className="team-member__description">
-						<Editable tagName="div" multiline="p" placeholder={__("Add a description for the team member")} onChange={onChangeDescription} value={attributes.description} focus={focusedEditable === "description"} onFocus={onFocusDescription} />
+						<Editable
+							tagName="div"
+							multiline="p"
+							placeholder={__("Add a description for the team member")}
+							onChange={onChangeDescription}
+							value={attributes.description}
+							focus={focusedEditable === "description"}
+							onFocus={onFocusDescription}
+						/>
 					</div>
 				</div>
-			</div>;
+			</div>
+		);
 	},
 
 	// The "save" property must be specified and must be a valid function.
@@ -133,7 +168,11 @@ registerBlockType("cgb/block-team-member", {
 			<div className={props.className}>
 				<div className="team-member__img">
 					<div>
-					<img className="image--circle" src={props.attributes.imgURL} alt={props.attributes.imgAlt} />
+						<img
+							className="image--circle"
+							src={props.attributes.imgURL}
+							alt={props.attributes.imgAlt}
+						/>
 					</div>
 				</div>
 				<div className="team-member__content">

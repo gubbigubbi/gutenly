@@ -4,33 +4,34 @@
  * CSS for just Backend enqueued after style.scss
  * which makes it higher in priority.
  */
- .image--circle {
-     border-radius: 100%;
- }
+.image--circle {
+	border-radius: 100%;
+}
 
-    button {
+button {
+	&.remove-image {
+		background-color: red;
+		border: 2px red solid;
+		padding: 5px 5px 0;
+		position: absolute;
+		top: 0;
+		left: 0;
+		opacity: 0.9;
 
-        &.remove-image {
-            background-color: red;
-            border: 2px red solid;
-            padding: 5px 5px 0;
-            position: absolute;
-            top: 0;
-            left: 0;
-            opacity: .9;
+		svg {
+			background: red;
+			fill: white;
+		}
 
-            svg {
-                background: red;
-                fill: white;
-            }
+		&:hover {
+			opacity: 1;
+		}
+	}
+}
 
-            &:hover {
-                opacity: 1;
-            }
-        }
+.wp-block-cgb-block-text-and-image {
+}
 
-    }
-
-.wp-block-cgb-block-text-and-image  {
-
+.transition-all {
+	transition: all 0.3s ease;
 }
