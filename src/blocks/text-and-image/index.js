@@ -14,9 +14,18 @@ const {
 	Editable,
 	MediaUpload,
 	BlockControls,
-	InnerBlocks
+	InnerBlocks,
+	InspectorControls
 } = wp.blocks; // Import registerBlockType() from wp.blocks as well as Editable so we can use TinyMCE
-const { Button, Toolbar, Tooltip, Dashicon } = wp.components;
+const {
+	Button,
+	Toolbar,
+	Tooltip,
+	Dashicon,
+	PanelBody,
+	PanelRow,
+	TextControl
+} = wp.components;
 /**
  * Register: aa Gutenberg Block.
  *

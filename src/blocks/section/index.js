@@ -132,6 +132,7 @@ registerBlockType("cgb/block-section", {
 					<BlockAlignmentToolbar
 						value={props.attributes.alignment}
 						onChange={updateAlignment}
+						controls={["full"]}
 					/>
 				</BlockControls>
 			),

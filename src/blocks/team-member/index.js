@@ -9,8 +9,22 @@ import icons from "../icons";
  */
 
 const { __ } = wp.i18n; // Import __() from wp.i18n
-const { registerBlockType, Editable, MediaUpload, BlockControls } = wp.blocks; // Import registerBlockType() from wp.blocks as well as Editable so we can use TinyMCE
-const { Button, Toolbar, Tooltip, Dashicon } = wp.components;
+const {
+	registerBlockType,
+	Editable,
+	MediaUpload,
+	BlockControls,
+	InspectorControls
+} = wp.blocks; // Import registerBlockType() from wp.blocks as well as Editable so we can use TinyMCE
+const {
+	Button,
+	Toolbar,
+	Tooltip,
+	Dashicon,
+	PanelBody,
+	PanelRow,
+	TextControl
+} = wp.components;
 /**
  * Register: aa Gutenberg Block.
  *
@@ -39,6 +53,14 @@ registerBlockType("cgb/block-team-member", {
 			type: "array",
 			source: "children",
 			selector: ".team-member__description"
+		},
+		email: {
+			type: "string",
+			default: "test@test.com"
+		},
+		phone: {
+			type: "string",
+			default: "0400 000 000"
 		},
 		imgURL: {
 			type: "string",
@@ -76,6 +98,14 @@ registerBlockType("cgb/block-team-member", {
 			props.setFocus(_.extend({}, focus, { editable: "title" }));
 		};
 
+		const onChangeEmail = value => {
+			props.setAttributes({ email: value });
+		};
+
+		const onChangePhone = value => {
+			props.setAttributes({ phone: value });
+		};
+
 		const onChangeDescription = value => {
 			props.setAttributes({ description: value });
 		};
@@ -104,7 +134,27 @@ registerBlockType("cgb/block-team-member", {
 			});
 		};
 
-		return (
+		return [
+			!!props.focus && (
+				<InspectorControls key="inspector">
+					<PanelBody title={__("Contact Details")}>
+						<PanelRow>
+							<TextControl
+								label={__("Email address")}
+								value={props.attributes.email}
+								onChange={onChangeEmail}
+							/>
+						</PanelRow>
+						<PanelRow>
+							<TextControl
+								label={__("Phone number")}
+								value={props.attributes.phone}
+								onChange={onChangePhone}
+							/>
+						</PanelRow>
+					</PanelBody>
+				</InspectorControls>
+			),
 			<div className={props.className}>
 				<div className="team-member__img">
 					{!attributes.imgID ? (
@@ -156,10 +206,14 @@ registerBlockType("cgb/block-team-member", {
 							focus={focusedEditable === "description"}
 							onFocus={onFocusDescription}
 						/>
+						<div class="row">
+							<div class="col-12 team-member__email">{attributes.email}</div>
+							<div class="col-12 team-member__phone">{attributes.phone}</div>
+						</div>
 					</div>
 				</div>
 			</div>
-		);
+		];
 	},
 
 	// The "save" property must be specified and must be a valid function.
@@ -179,6 +233,23 @@ registerBlockType("cgb/block-team-member", {
 					<h3 className="team-member__title">{props.attributes.title}</h3>
 					<div className="team-member__description">
 						{props.attributes.description}
+					</div>
+					<div class="row">
+						<div class="col-xs-12 col-md-6 team-member__email">
+							<a
+								className="ga-trigger"
+								href={"mailto:" + props.attributes.email}
+							>
+								<i class="icon icon-left fw ion-ios-email-outline" />
+								Email
+							</a>
+						</div>
+						<div class="col-xs-12 col-md-6 team-member__phone">
+							<a className="ga-trigger" href={"tel:" + props.attributes.email}>
+								<i class="icon icon-left fw ion-ios-telephone-outline" />
+								Call
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>

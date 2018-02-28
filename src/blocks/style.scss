@@ -15,9 +15,16 @@
 .flex {
 	display: flex;
 	align-items: center;
+	@media all and (max-width: 48rem) {
+		margin-bottom: -1rem;
+	}
 }
 .col-6 {
 	width: 50%;
+	@media all and (max-width: 48rem) {
+		width: 100%;
+		margin-bottom: 1rem;
+	}
 }
 .col-3 {
 	width: calc(100% / 4);

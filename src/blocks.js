@@ -20,7 +20,8 @@ import "./blocks/editor.scss";
  * Import blocks
  */
 import "./blocks/text-and-image";
-//import "./blocks/features-list";
+import "./blocks/features-list";
 import "./blocks/team-member";
 import "./blocks/section";
+//import "./blocks/fancy-heading";
 // TODO: spacer block

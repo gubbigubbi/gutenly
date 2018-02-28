@@ -4,6 +4,12 @@
  * CSS for just Backend enqueued after style.scss
  * which makes it higher in priority.
  */
+
+// override the default gutenberg editor width
+.edit-post-visual-editor .editor-block-list__block {
+	max-width: 1102px;
+}
+
 .image--circle {
 	border-radius: 100%;
 }
@@ -38,4 +44,12 @@ button {
 
 .transition-all {
 	transition: all 0.3s ease;
+}
+
+.text-center {
+	text-align: center;
+}
+.center-block {
+	display: block;
+	margin: 0 auto;
 }

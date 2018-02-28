@@ -1,18 +1,31 @@
 /**
  * BLOCK: Features
  *
- * A simple block to show some features
+ * A simple block to show a feature
  */
 import icons from "../icons";
-
-import { times } from "lodash";
 /**
  * Internal block libraries
  */
 
 const { __ } = wp.i18n; // Import __() from wp.i18n
-const { registerBlockType, Editable, MediaUpload, BlockControls } = wp.blocks;
-const { Button, Toolbar, Tooltip, Dashicon } = wp.components;
+const {
+	registerBlockType,
+	Editable,
+	MediaUpload,
+	BlockControls,
+	InnerBlocks,
+	InspectorControls
+} = wp.blocks; // Import registerBlockType() from wp.blocks as well as Editable so we can use TinyMCE
+const {
+	Button,
+	Toolbar,
+	Tooltip,
+	Dashicon,
+	PanelBody,
+	PanelRow,
+	TextControl
+} = wp.components;
 /**
  * Register: aa Gutenberg Block.
  *
@@ -25,94 +38,200 @@ const { Button, Toolbar, Tooltip, Dashicon } = wp.components;
  * @return {?WPBlock}          The block, if it has been successfully
  *                             registered; otherwise `undefined`.
  */
-registerBlockType("cgb/block-features-list", {
+registerBlockType("cgb/block-feature", {
 	// Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
-	title: __("Features", "CGB"), // Block title.
+	title: __("Feature", "CGB"), // Block title.
 	icon: "heart", // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
 	category: "common", // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
-	keywords: [__("features"), __("Features")],
+	keywords: [__("feature"), __("Feature List")],
 	attributes: {
-		content: {
+		title: {
+			type: "string",
+			source: "children",
+			selector: "h3"
+		},
+		description: {
 			type: "array",
-			source: "query",
-			selector: ".feature-text",
-			query: {
-				children: {
-					source: "children"
-				}
-			},
-			default: [[], [], [], []]
+			source: "children",
+			selector: ".feature__description"
+		},
+		imgURL: {
+			type: "string",
+			source: "attribute",
+			attribute: "src",
+			selector: "img"
 		},
 		imgID: {
 			type: "number"
 		},
-		columns: {
-			type: "number",
-			default: 4
+		imgAlt: {
+			type: "string",
+			source: "attribute",
+			attribute: "alt",
+			selector: "img"
+		},
+		link: {
+			type: "string",
+			default: "/contact"
+		},
+		buttonText: {
+			type: "string",
+			default: "Find out more"
 		}
 	},
 
 	// The "edit" property must be a valid function.
-	edit({ attributes, setAttributes, className, focus, setFocus }) {
-		const { content, images, columns, imgID } = attributes;
+	edit: props => {
+		// This control which editable will be focused and falls back to the title editable
+		const focusedEditable = props.focus
+			? props.focus.editable || "title"
+			: null;
+		const attributes = props.attributes;
+
+		const onChangeTitle = value => {
+			props.setAttributes({ title: value });
+		};
+		const onFocusTitle = focus => {
+			props.setFocus(_.extend({}, focus, { editable: "title" }));
+		};
+
+		const onChangeDescription = value => {
+			props.setAttributes({ description: value });
+		};
+		const onFocusDescription = focus => {
+			props.setFocus(_.extend({}, focus, { editable: "description" }));
+		};
 
 		const onSelectImage = img => {
-			setAttributes({
-				imgID: img.id,
-				imgURL: img.url,
-				imgAlt: img.alt
+			// fetch the thumb details
+			const image = new wp.api.models.Media({ id: img.id })
+				.fetch()
+				.done(res => {
+					const thumb = res.media_details.sizes["square-thumb-small"];
+					props.setAttributes({
+						imgID: img.id,
+						imgURL: thumb.source_url,
+						imgAlt: img.alt
+					});
+				});
+		};
+		const onRemoveImage = () => {
+			props.setAttributes({
+				imgID: null,
+				imgURL: null,
+				imgAlt: null
 			});
 		};
 
-		return (
-			<div className={className}>
-				<div className="row flex">
-					{times(columns, index => (
-						<div className="col-3" key={index}>
-							<Editable
-								tagName="div"
-								multiline="p"
-								value={content && content[index] && content[index].children}
-								onChange={nextContent => {
-									setAttributes({
-										content: [
-											...content.slice(0, index), // get the array before
-											{ children: nextContent }, // add the content in here
-											...content.slice(index + 1) // get the array after
-										]
-									});
-								}}
-								focus={focus && focus.column === index}
-								onFocus={() => setFocus({ column: index })}
-								placeholder={__("New Feature")}
-							/>
-						</div>
-					))}
-				</div>
+		const onChangeLink = value => {
+			props.setAttributes({ link: value });
+		};
 
-				<p>preview</p>
-				<div className="row flex">
-					{times(columns, index => (
-						<div className="wp-block-column col-3" key={`column-${index}`}>
-							<div>{content[index].children}</div>
+		const onChangeButtonText = value => {
+			props.setAttributes({ buttonText: value });
+		};
+
+		return [
+			!!props.focus && (
+				<InspectorControls key="inspector">
+					<PanelBody title={__("Link Options")}>
+						<PanelRow>
+							<TextControl
+								label={__("Link URL")}
+								value={props.attributes.link}
+								onChange={onChangeLink}
+							/>
+						</PanelRow>
+						<PanelRow>
+							<TextControl
+								label={__("Link Text")}
+								value={props.attributes.buttonText}
+								onChange={onChangeButtonText}
+							/>
+						</PanelRow>
+					</PanelBody>
+				</InspectorControls>
+			),
+			<div className={props.className}>
+				<div className="feature__img mb1">
+					{!attributes.imgID ? (
+						<MediaUpload
+							onSelect={onSelectImage}
+							type="image"
+							value={attributes.imgID}
+							render={({ open }) => (
+								<Button
+									className="components-button button button-large"
+									onClick={open}
+								>
+									Open Media Library
+								</Button>
+							)}
+						/>
+					) : (
+						<div class="position--relative">
+							<img
+								class="center-block image--circle"
+								src={attributes.imgURL}
+								alt={attributes.imgAlt}
+							/>
+							{props.focus ? (
+								<Button className="remove-image" onClick={onRemoveImage}>
+									{icons.remove}
+								</Button>
+							) : null}
 						</div>
-					))}
+					)}
+				</div>
+				<div className="feature__content text-center">
+					<Editable
+						tagName="h3"
+						placeholder={__("Feature title")}
+						onChange={onChangeTitle}
+						value={attributes.title}
+						focus={focusedEditable === "title"}
+						onFocus={onFocusTitle}
+					/>
+
+					<div className="feature__description">
+						<Editable
+							tagName="div"
+							multiline="p"
+							placeholder={__("Feature description")}
+							onChange={onChangeDescription}
+							value={attributes.description}
+							focus={focusedEditable === "description"}
+							onFocus={onFocusDescription}
+						/>
+						<InnerBlocks />
+						<a href={props.attributes.link} class="button w100 button--primary">
+							{props.attributes.buttonText}
+						</a>
+					</div>
 				</div>
 			</div>
-		);
+		];
 	},
 
 	// The "save" property must be specified and must be a valid function.
-	save({ attributes, className }) {
-		const { content, columns } = attributes;
+	save: function(props) {
 		return (
-			<div className={className}>
-				<div className="row flex">
-					{times(columns, index => (
-						<div className="wp-block-column col-3" key={`column-${index}`}>
-							<div className="feature-text">{content[index].children}</div>
-						</div>
-					))}
+			<div className={props.className}>
+				<img
+					class="image--circle center-block"
+					src={props.attributes.imgURL}
+					alt={props.attributes.imgAlt}
+				/>
+
+				<div className="feature__content center-xs">
+					<h3 className="feature__title">{props.attributes.title}</h3>
+					<div className="feature__description">
+						{props.attributes.description}
+					</div>
+					<InnerBlocks.Content />
+					<a href={props.attributes.link} class="button button--primary">
+						{props.attributes.buttonText}
+					</a>
 				</div>
 			</div>
 		);
