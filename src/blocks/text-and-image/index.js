@@ -3,7 +3,12 @@
  *
  * A simple layout block to show and image and some text side by side
  */
+
+/**
+ * Block Dependencies
+ */
 import icons from "../icons";
+import Inspector from './inspector';
 /**
  * Internal block libraries
  */
@@ -68,6 +73,10 @@ registerBlockType("cgb/block-text-and-image", {
 		textFirstAlignment: {
 			type: "boolean",
 			default: false
+		},
+		columnWidth: {
+			type: "number",
+			default: 50,
 		}
 	},
 
@@ -95,7 +104,17 @@ registerBlockType("cgb/block-text-and-image", {
 				textFirstAlignment: !props.attributes.textFirstAlignment
 			});
 		};
-		return (
+		const onChangeColumnWidth = value => {
+			props.setAttributes({
+				columnWidth: value
+			})
+		};
+		return [
+			!! props.focus && (
+				<Inspector
+				  { ...{ onChangeColumnWidth, ...props } }
+				/>
+	  		),
 			<div className={props.className}>
 				{!!props.focus && (
 					<BlockControls key="custom-controls">
@@ -120,10 +139,14 @@ registerBlockType("cgb/block-text-and-image", {
 							: "row"
 					}}
 				>
-					<div className="col-6 message-body">
+					<div className="message-body" style={{
+						width: props.attributes.columnWidth	+ '%'
+					}}>
 						<InnerBlocks />
 					</div>
-					<div className="col-6">
+					<div style={{
+						flex: 1,	
+					}}>
 						{!props.attributes.imgID ? (
 							<MediaUpload
 								onSelect={onSelectImage}
@@ -154,7 +177,7 @@ registerBlockType("cgb/block-text-and-image", {
 					</div>
 				</div>
 			</div>
-		);
+		];
 	},
 
 	// The "save" property must be specified and must be a valid function.
@@ -165,10 +188,14 @@ registerBlockType("cgb/block-text-and-image", {
 		return (
 			<div className={props.className}>
 				<div className="flex row" style={{ flexDirection: colOrder }}>
-					<div className="col-6 message-body">
+					<div className="message-body" style={{
+						width: props.attributes.columnWidth	+ '%'
+					}}>
 						<InnerBlocks.Content />
 					</div>
-					<div className="col-6">
+					<div style={{
+						flex: 1,	
+					}}>
 						<img src={props.attributes.imgURL} alt={props.attributes.imgAlt} />
 					</div>
 				</div>
