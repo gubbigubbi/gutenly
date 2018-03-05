@@ -5,6 +5,7 @@
  */
 import classnames from "classnames";
 import icons from "../icons";
+import Inspector from './inspector';
 
 /**
  * Internal block libraries
@@ -17,13 +18,9 @@ const {
 	InspectorControls,
 	BlockControls,
 	BlockDescription,
-	BlockAlignmentToolbar,
-	ColorPalette
+	BlockAlignmentToolbar
 } = wp.blocks; // Import registerBlockType() from wp.blocks as well as Editable so we can use TinyMCE
 const {
-	PanelBody,
-	PanelRow,
-	PanelColor,
 	TextControl,
 	Dashicon
 } = wp.components;
@@ -65,6 +62,9 @@ registerBlockType("cgb/block-section", {
 		},
 		alignment: {
 			type: "string"
+		},
+		id: {
+			type: "string"
 		}
 	},
 
@@ -86,46 +86,29 @@ registerBlockType("cgb/block-section", {
 			props.setAttributes({ sectionBackgroundColor: value });
 		};
 
-		const updateAlignment = nextAlign =>
+		const updateAlignment = nextAlign => {
 			props.setAttributes({
 				alignment: nextAlign
 			});
+		};
+
+		const onChangeSectionID = value => {
+			props.setAttributes({
+				id: value
+			})
+		};
 
 		return [
 			!!props.focus && (
-				<InspectorControls key="inspector">
-					<PanelBody title={__("Section Spacings")}>
-						<PanelRow>
-							<TextControl
-								label={__("Vertical padding (rem)")}
-								value={props.attributes.verticalPadding}
-								onChange={onChangePadding}
-							/>
-						</PanelRow>
-						<PanelRow>
-							<TextControl
-								label={__("Top Margin (rem)")}
-								value={props.attributes.topMargin}
-								onChange={onChangeMarginTop}
-							/>
-							<TextControl
-								label={__("Bottom Margin (rem)")}
-								value={props.attributes.bottomMargin}
-								onChange={onChangeMarginBottom}
-							/>
-						</PanelRow>
-
-						<PanelColor
-							title={__("Section Background Color")}
-							colorValue={props.attributes.sectionBackgroundColor}
-						>
-							<ColorPalette
-								value={props.attributes.sectionBackgroundColor}
-								onChange={onChangeSectionBackgroundColor}
-							/>
-						</PanelColor>
-					</PanelBody>
-				</InspectorControls>
+				<Inspector
+				  { ...{ 
+					  onChangePadding, 
+					  onChangeMarginTop, 
+					  onChangeMarginBottom, 
+					  onChangeSectionBackgroundColor, 
+					  onChangeSectionID,
+					...props } }
+				/>
 			),
 			!!props.focus && (
 				<BlockControls key="controls">
@@ -175,6 +158,7 @@ registerBlockType("cgb/block-section", {
 
 		return (
 			<div
+				id={props.attributes.id}
 				className={classes}
 				style={{
 					backgroundColor: props.attributes.sectionBackgroundColor,
