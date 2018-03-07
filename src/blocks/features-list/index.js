@@ -4,6 +4,7 @@
  * A simple block to show a feature
  */
 import icons from "../icons";
+import Inspector from './inspector';
 /**
  * Internal block libraries
  */
@@ -15,16 +16,12 @@ const {
 	MediaUpload,
 	BlockControls,
 	InnerBlocks,
-	InspectorControls
 } = wp.blocks; // Import registerBlockType() from wp.blocks as well as Editable so we can use TinyMCE
 const {
 	Button,
 	Toolbar,
 	Tooltip,
-	Dashicon,
-	PanelBody,
-	PanelRow,
-	TextControl
+	Dashicon
 } = wp.components;
 /**
  * Register: aa Gutenberg Block.
@@ -133,24 +130,12 @@ registerBlockType("cgb/block-feature", {
 
 		return [
 			!!props.focus && (
-				<InspectorControls key="inspector">
-					<PanelBody title={__("Link Options")}>
-						<PanelRow>
-							<TextControl
-								label={__("Link URL")}
-								value={props.attributes.link}
-								onChange={onChangeLink}
-							/>
-						</PanelRow>
-						<PanelRow>
-							<TextControl
-								label={__("Link Text")}
-								value={props.attributes.buttonText}
-								onChange={onChangeButtonText}
-							/>
-						</PanelRow>
-					</PanelBody>
-				</InspectorControls>
+				<Inspector
+					{ ...{ 
+						onChangeLink, 
+						onChangeButtonText, 
+					...props } }
+				/>
 			),
 			<div className={props.className}>
 				<div className="feature__img mb1">
@@ -183,7 +168,7 @@ registerBlockType("cgb/block-feature", {
 						</div>
 					)}
 				</div>
-				<div className="feature__content text-center">
+				<div className="feature__content">
 					<Editable
 						tagName="h3"
 						placeholder={__("Feature title")}
@@ -223,7 +208,7 @@ registerBlockType("cgb/block-feature", {
 					alt={props.attributes.imgAlt}
 				/>
 
-				<div className="feature__content center-xs">
+				<div className="feature__content">
 					<h3 className="feature__title">{props.attributes.title}</h3>
 					<div className="feature__description">
 						{props.attributes.description}

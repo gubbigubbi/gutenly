@@ -138,7 +138,6 @@ registerBlockType("cgb/block-section", {
 
 	getEditWrapperProps(attributes) {
 		const { alignment } = attributes;
-		console.log(validAlignments);
 
 		if (-1 !== validAlignments.indexOf(alignment)) {
 			return { "data-align": alignment };
