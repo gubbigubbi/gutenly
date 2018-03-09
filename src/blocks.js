@@ -23,6 +23,7 @@ import "./blocks/text-and-image";
 import "./blocks/features-list";
 import "./blocks/team-member";
 import "./blocks/section";
+import "./blocks/before-and-after";
 //import "./blocks/two-columns";
 //import "./blocks/fancy-heading";
 

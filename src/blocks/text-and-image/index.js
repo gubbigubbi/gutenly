@@ -193,7 +193,7 @@ registerBlockType("cgb/block-text-and-image", {
 					}}>
 						<InnerBlocks.Content />
 					</div>
-					<div style={{
+					<div className="image-wrapper" style={{
 						flex: 1,	
 					}}>
 						<img src={props.attributes.imgURL} alt={props.attributes.imgAlt} />
