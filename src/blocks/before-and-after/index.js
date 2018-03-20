@@ -15,7 +15,6 @@ import icons from "../icons";
 const { __ } = wp.i18n; // Import __() from wp.i18n
 const {
 	registerBlockType,
-	Editable,
 	MediaUpload,
 	BlockControls,
 	InnerBlocks,
@@ -47,34 +46,18 @@ registerBlockType("cgb/block-before-and-after", {
 	attributes: {
 		beforeImgURL: {
 			type: "string",
-			source: "attribute",
-			attribute: "src",
-			selector: "img"
 		},
 		beforeImgID: {
 			type: "number"
 		},
-		beforeImgAlt: {
-			type: "string",
-			source: "attribute",
-			attribute: "alt",
-			selector: "img"
-		},
+
 		afterImgURL: {
 			type: "string",
-			source: "attribute",
-			attribute: "src",
-			selector: "img"
 		},
 		afterImgID: {
 			type: "number"
 		},
-		afterImgAlt: {
-			type: "string",
-			source: "attribute",
-			attribute: "alt",
-			selector: "img"
-		},
+
 	},
 
 	// The "edit" property must be a valid function.
@@ -84,14 +67,14 @@ registerBlockType("cgb/block-before-and-after", {
 			props.setAttributes({
 				beforeImgID: img.id,
 				beforeImgURL: img.url,
-				beforeImgAlt: img.alt
+
 			});
 		};
 		const onRemoveBeforeImage = () => {
 			props.setAttributes({
 				beforeImgID: null,
 				beforeImgURL: null,
-				beforeImgAlt: null
+	
 			});
         };
         
@@ -99,14 +82,14 @@ registerBlockType("cgb/block-before-and-after", {
 			props.setAttributes({
 				afterImgID: img.id,
 				afterImgURL: img.url,
-				afterImgAlt: img.alt
+
 			});
 		};
 		const onRemoveAfterImage = () => {
 			props.setAttributes({
 				afterImgID: null,
 				afterImgURL: null,
-				afterImgAlt: null
+
 			});
 		};
 
@@ -137,7 +120,6 @@ registerBlockType("cgb/block-before-and-after", {
 							<div className="position-relative">
 								<img
 									src={props.attributes.beforeImgURL}
-									alt={props.attributes.beforeImgAlt}
 								/>
 								{props.focus ? (
 									<Button className="remove-image" onClick={onRemoveBeforeImage}>
@@ -171,7 +153,6 @@ registerBlockType("cgb/block-before-and-after", {
 							<div className="position-relative">
 								<img
 									src={props.attributes.afterImgURL}
-									alt={props.attributes.afterImgAlt}
 								/>
 								{props.focus ? (
 									<Button className="remove-image" onClick={onRemoveAfterImage}>
@@ -189,8 +170,6 @@ registerBlockType("cgb/block-before-and-after", {
 	// The "save" property must be specified and must be a valid function.
 	save: function(props) {
 	
-		const id = Math.random().toString(36).substring(7);		
-
 		return (
 			<div className={props.className}>
                 <div className="be__container">
@@ -198,12 +177,12 @@ registerBlockType("cgb/block-before-and-after", {
                         <figure className="be__figure" style={{
                           backgroundImage: `url( ${props.attributes.beforeImgURL} )`
                         }}>
-                            <div id={id} className="be__handle"></div>
-                            <div id={id} className="be__divisor" style={{
+                            <div className="be__handle"></div>
+                            <div className="be__divisor" style={{
                                 backgroundImage: `url( ${props.attributes.afterImgURL} )` 
                             }} ></div>
                         </figure>
-                        <input type="range" min="0" max="100" value="50" id={id} className="be__slider" />
+                        <input type="range" min="0" max="100" value="50" className="be__slider" />
                     </div>
                 </div>
 			</div>
