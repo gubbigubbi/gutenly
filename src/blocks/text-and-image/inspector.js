@@ -4,52 +4,40 @@
 const { __ } = wp.i18n;
 const { Component } = wp.element;
 const {
-  InspectorControls,
-  BlockDescription,
+	InspectorControls,
 } = wp.blocks;
 const {
-  Toolbar,
-  Button,
-  PanelBody,
-  PanelRow,
-  RangeControl
+	PanelBody,
+	PanelRow,
+	RangeControl,
 } = wp.components;
 
 /**
  * Create an Inspector Controls wrapper Component
  */
 export default class Inspector extends Component {
+	render() {
+		const { attributes: { columnWidth }, onChangeColumnWidth } = this.props;
 
-  constructor( props ) {
-    super( ...arguments );
-  }
+		return (
+			<InspectorControls>
+				<PanelBody
+					title={ __( 'Column Width (%)' ) }
+				>
+					<PanelRow>
 
-  render() {
-    return (
-      <InspectorControls key="inspector">
+						<RangeControl
+							value={ columnWidth }
+							onChange={ onChangeColumnWidth }
+							min={ 10 }
+							max={ 90 }
+							step={ 10 }
+							allowReset="true"
+						/>
 
-        <BlockDescription>
-          <p>{ __( 'Block settings' ) }</p>
-        </BlockDescription>
-
-        <PanelBody
-          title={ __( 'Column Width (%)' ) }
-        >
-          <PanelRow>
-
-            <RangeControl
-                value={ this.props.attributes.columnWidth }
-                onChange={ this.props.onChangeColumnWidth }
-                min={ 10 }
-                max={ 90 }
-                step={ 10 }
-                allowReset="true"
-            />
-
-          </PanelRow>
-        </PanelBody>
-      </InspectorControls>
-    );
-  }
-
+					</PanelRow>
+				</PanelBody>
+			</InspectorControls>
+		);
+	}
 }

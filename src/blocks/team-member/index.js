@@ -39,7 +39,7 @@ const {
  */
 registerBlockType("cgb/block-team-member", {
 	// Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
-	title: __("Team Member", "CGB"), // Block title.
+	title: __("Team Member"), // Block title.
 	icon: "nametag", // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
 	category: "common", // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
 	keywords: [__("team"), __("Team Member")],

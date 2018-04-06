@@ -3,6 +3,7 @@
  *
  * A simple block to show a feature
  */
+import classnames from "classnames";
 import icons from "../icons";
 import Inspector from './inspector';
 /**
@@ -12,11 +13,12 @@ import Inspector from './inspector';
 const { __ } = wp.i18n; // Import __() from wp.i18n
 const {
 	registerBlockType,
-	Editable,
+	RichText,
 	MediaUpload,
 	BlockControls,
 	InnerBlocks,
-} = wp.blocks; // Import registerBlockType() from wp.blocks as well as Editable so we can use TinyMCE
+	BlockAlignmentToolbar
+} = wp.blocks; 
 const {
 	Button,
 	Toolbar,
@@ -37,7 +39,7 @@ const {
  */
 registerBlockType("cgb/block-feature", {
 	// Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
-	title: __("Feature", "CGB"), // Block title.
+	title: __("Feature"), // Block title.
 	icon: "heart", // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
 	category: "common", // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
 	keywords: [__("feature"), __("Feature List")],
@@ -67,6 +69,10 @@ registerBlockType("cgb/block-feature", {
 			attribute: "alt",
 			selector: "img"
 		},
+		circularImg: {
+			type: "boolean",
+			default: "false",
+		},
 		link: {
 			type: "string",
 			default: "/contact"
@@ -74,11 +80,23 @@ registerBlockType("cgb/block-feature", {
 		buttonText: {
 			type: "string",
 			default: "Find out more"
+		},
+		blockAlignment: {
+			type: 'string',
+			default: 'center'
+		},
+	},
+
+	getEditWrapperProps( attributes ) {
+		const { blockAlignment } = attributes;
+		if ( 'left' === blockAlignment || 'right' === blockAlignment || 'full' === blockAlignment ) {
+			return { 'data-align': blockAlignment }
 		}
 	},
 
 	// The "edit" property must be a valid function.
 	edit: props => {
+		const { attributes: { blockAlignment, imgURL, imgAlt, buttonText, link, circularImg }, className } = props;
 		// This control which editable will be focused and falls back to the title editable
 		const focusedEditable = props.focus
 			? props.focus.editable || "title"
@@ -100,17 +118,11 @@ registerBlockType("cgb/block-feature", {
 		};
 
 		const onSelectImage = img => {
-			// fetch the thumb details
-			const image = new wp.api.models.Media({ id: img.id })
-				.fetch()
-				.done(res => {
-					const thumb = res.media_details.sizes["square-thumb-small"];
-					props.setAttributes({
-						imgID: img.id,
-						imgURL: thumb.source_url,
-						imgAlt: img.alt
-					});
-				});
+			props.setAttributes({
+				imgID: img.id,
+				imgURL: img.url,
+				imgAlt: img.alt
+			});
 		};
 		const onRemoveImage = () => {
 			props.setAttributes({
@@ -128,16 +140,42 @@ registerBlockType("cgb/block-feature", {
 			props.setAttributes({ buttonText: value });
 		};
 
+		const updateAlignment = nextAlign => {
+			props.setAttributes({
+				blockAlignment: nextAlign
+			});
+		};
+
+		const onChangeImgType = value => {
+			props.setAttributes({ circularImg: value });
+		};
+
+		const imgClasses = classnames(
+			'center-block',
+			circularImg ? `image--circle` : null
+		);
+
 		return [
 			!!props.focus && (
 				<Inspector
 					{ ...{ 
 						onChangeLink, 
 						onChangeButtonText, 
+						onChangeImgType,
 					...props } }
 				/>
 			),
-			<div className={props.className}>
+			!!props.focus && (
+				<BlockControls key="controls">
+					<BlockAlignmentToolbar
+						value={ blockAlignment }
+						onChange={ updateAlignment }
+						controls={["left", "right", "center"]}
+					/>
+				</BlockControls>
+			),
+			<div className={className}
+			style={ { textAlign: blockAlignment } }>
 				<div className="feature__img mb1">
 					{!attributes.imgID ? (
 						<MediaUpload
@@ -156,12 +194,12 @@ registerBlockType("cgb/block-feature", {
 					) : (
 						<div class="position--relative">
 							<img
-								class="center-block image--circle"
-								src={attributes.imgURL}
-								alt={attributes.imgAlt}
+								class={imgClasses}
+								src={imgURL}
+								alt={imgAlt}
 							/>
 							{props.focus ? (
-								<Button className="remove-image" onClick={onRemoveImage}>
+								<Button className="remove-image" onClick={ onRemoveImage }>
 									{icons.remove}
 								</Button>
 							) : null}
@@ -169,7 +207,7 @@ registerBlockType("cgb/block-feature", {
 					)}
 				</div>
 				<div className="feature__content">
-					<Editable
+					<RichText
 						tagName="h3"
 						placeholder={__("Feature title")}
 						onChange={onChangeTitle}
@@ -179,7 +217,7 @@ registerBlockType("cgb/block-feature", {
 					/>
 
 					<div className="feature__description">
-						<Editable
+						<RichText
 							tagName="div"
 							multiline="p"
 							placeholder={__("Feature description")}
@@ -189,8 +227,8 @@ registerBlockType("cgb/block-feature", {
 							onFocus={onFocusDescription}
 						/>
 						<InnerBlocks />
-						<a href={props.attributes.link} class="button w100 button--primary">
-							{props.attributes.buttonText}
+						<a href={ link } class="button w100 button--primary">
+							{ buttonText }
 						</a>
 					</div>
 				</div>
@@ -200,22 +238,33 @@ registerBlockType("cgb/block-feature", {
 
 	// The "save" property must be specified and must be a valid function.
 	save: function(props) {
+
+		const { attributes: { blockAlignment, imgURL, imgAlt, title, description, buttonText, link }, classNames } = props;
+
+		const classes = classnames(
+			classNames,
+			blockAlignment ? `flex--align${blockAlignment}` : null
+		);
+
 		return (
-			<div className={props.className}>
-				<img
-					class="image--circle center-block"
-					src={props.attributes.imgURL}
-					alt={props.attributes.imgAlt}
-				/>
+			<div className={ classes }
+			style = { { textAlign: blockAlignment } }>
+				<div className="featured__image-wrapper">
+					<img
+						class="image--circle"
+						src={ imgURL }
+						alt={ imgAlt }
+					/>
+				</div>
 
 				<div className="feature__content">
-					<h3 className="feature__title">{props.attributes.title}</h3>
+					<h3 className="feature__title">{ title }</h3>
 					<div className="feature__description">
-						{props.attributes.description}
+						{ description }
 					</div>
 					<InnerBlocks.Content />
-					<a href={props.attributes.link} class="button button--primary">
-						{props.attributes.buttonText}
+					<a href={ link } class="button button--primary">
+						{ buttonText }
 					</a>
 				</div>
 			</div>

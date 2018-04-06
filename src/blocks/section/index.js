@@ -39,7 +39,7 @@ const validAlignments = ["wide", "full"];
  */
 registerBlockType("cgb/block-section", {
 	// Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
-	title: __("Section", "CGB"), // Block title.
+	title: __("Section"), // Block title.
 	icon: "editor-table", // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
 	category: "common", // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
 	keywords: [__("team"), __("Section")],

@@ -7,8 +7,25 @@
 
 // override the default gutenberg editor width
 .edit-post-visual-editor .editor-block-list__block {
-	max-width: 1102px;
+	max-width: 940px;
 }
+
+// .editor-block-list__layout .editor-block-list__block {
+// 	padding-left: 32px;
+// 	padding-right: 32px;
+// 	&:before {
+// 		left: 28px;
+// 		right: 28px;
+// 	}
+// }
+
+// .editor-block-list__layout .editor-block-list__block > .editor-block-mover {
+// 	left: -10px;
+// }
+
+// .editor-block-list__layout .editor-block-list__block > .editor-block-settings-menu {
+// 	right: -12px;
+// }
 
 .image--circle {
 	border-radius: 100%;

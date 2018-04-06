@@ -39,7 +39,7 @@ const {
  */
 registerBlockType("cgb/block-before-and-after", {
 	
-	title: __("Before & After", "CGB"), // Block title.
+	title: __("Before & After"), // Block title.
 	icon: "image-flip-horizontal", // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
 	category: "common", // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
 	keywords: [__("before-and-after — CGB Block"), __("Before & After")],
