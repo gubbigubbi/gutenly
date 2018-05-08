@@ -102,73 +102,74 @@ registerBlockType( 'cgb/block-text-and-image', {
 			} );
 		};
 		return [
-			!! props.focus && (
+			<div>
 				<Inspector
 					{ ...{ onChangeColumnWidth, ...props } }
 				/>
-			),
-			<div className={ props.className }>
-				{ !! props.focus && (
-					<BlockControls key="custom-controls">
-						<Toolbar className="components-toolbar">
-							<Tooltip text={ __( 'Switch image/text alignment' ) }>
-								<Button
-									className="components-button components-icon-button components-toolbar__control"
-									onClick={ toggleTextFirstAlignment }
-								>
-									<Dashicon icon="image-flip-horizontal" />
-								</Button>
-							</Tooltip>
-						</Toolbar>
-					</BlockControls>
-				) }
-
-				<div
-					className="flex row"
-					style={ {
-						flexDirection: props.attributes.textFirstAlignment ?
-							'row-reverse' :
-							'row',
-					} }
-				>
-					<div className="message-body" style={ {
-						width: props.attributes.columnWidth	+ '%',
-					} }>
-						<InnerBlocks />
-					</div>
-					<div style={ {
-						flex: 1,
-					} }>
-						{ ! props.attributes.imgID ? (
-							<MediaUpload
-								onSelect={ onSelectImage }
-								type="image"
-								value={ props.attributes.imgID }
-								render={ ( { open } ) => (
+			
+				<div className={ props.className }>
+					{ !! props.focus && (
+						<BlockControls key="custom-controls">
+							<Toolbar className="components-toolbar">
+								<Tooltip text={ __( 'Switch image/text alignment' ) }>
 									<Button
-										className="components-button button button-large"
-										onClick={ open }
+										className="components-button components-icon-button components-toolbar__control"
+										onClick={ toggleTextFirstAlignment }
 									>
-										Open Media Library
+										<Dashicon icon="image-flip-horizontal" />
 									</Button>
-								) }
-							/>
-						) : (
-							<div className="position-relative">
-								<img
-									src={ props.attributes.imgURL }
-									alt={ props.attributes.imgAlt }
+								</Tooltip>
+							</Toolbar>
+						</BlockControls>
+					) }
+
+					<div
+						className="flex row"
+						style={ {
+							flexDirection: props.attributes.textFirstAlignment ?
+								'row-reverse' :
+								'row',
+						} }
+					>
+						<div className="message-body" style={ {
+							width: props.attributes.columnWidth	+ '%',
+						} }>
+							<InnerBlocks />
+						</div>
+						<div style={ {
+							flex: 1,
+						} }>
+							{ ! props.attributes.imgID ? (
+								<MediaUpload
+									onSelect={ onSelectImage }
+									type="image"
+									value={ props.attributes.imgID }
+									render={ ( { open } ) => (
+										<Button
+											className="components-button button button-large"
+											onClick={ open }
+										>
+											Open Media Library
+										</Button>
+									) }
 								/>
-								{ props.focus ? (
-									<Button className="remove-image" onClick={ onRemoveImage }>
-										{ icons.remove }
-									</Button>
-								) : null }
-							</div>
-						) }
+							) : (
+								<div className="position-relative">
+									<img
+										src={ props.attributes.imgURL }
+										alt={ props.attributes.imgAlt }
+									/>
+									{ props.focus ? (
+										<Button className="remove-image" onClick={ onRemoveImage }>
+											{ icons.remove }
+										</Button>
+									) : null }
+								</div>
+							) }
+						</div>
 					</div>
 				</div>
-			</div>,
+			</div>
 		];
 	},
 

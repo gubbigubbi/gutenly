@@ -6,6 +6,7 @@
 import classnames from "classnames";
 import icons from "../icons";
 import Inspector from './inspector';
+
 /**
  * Internal block libraries
  */
@@ -118,12 +119,30 @@ registerBlockType("cgb/block-feature", {
 		};
 
 		const onSelectImage = img => {
+
+			let thumb = img.url;
+
 			props.setAttributes({
-				imgID: img.id,
-				imgURL: img.url,
+				imgID	: img.id,
 				imgAlt: img.alt
 			});
+
+			if(props.attributes.circularImg) {
+				const image = new wp.api.models.Media({ id: img.id })
+				.fetch()
+				.done(res => {
+					thumb = res.media_details.sizes['thumbnail'].source_url;
+					props.setAttributes({
+						imgURL: thumb
+					});					
+				})
+			} else {
+				props.setAttributes({
+					imgURL: img.url
+				});	
+			}
 		};
+
 		const onRemoveImage = () => {
 			props.setAttributes({
 				imgID: null,
@@ -156,7 +175,7 @@ registerBlockType("cgb/block-feature", {
 		);
 
 		return [
-			!!props.focus && (
+			<div>
 				<Inspector
 					{ ...{ 
 						onChangeLink, 
@@ -164,8 +183,7 @@ registerBlockType("cgb/block-feature", {
 						onChangeImgType,
 					...props } }
 				/>
-			),
-			!!props.focus && (
+			
 				<BlockControls key="controls">
 					<BlockAlignmentToolbar
 						value={ blockAlignment }
@@ -173,63 +191,64 @@ registerBlockType("cgb/block-feature", {
 						controls={["left", "right", "center"]}
 					/>
 				</BlockControls>
-			),
-			<div className={className}
-			style={ { textAlign: blockAlignment } }>
-				<div className="feature__img mb1">
-					{!attributes.imgID ? (
-						<MediaUpload
-							onSelect={onSelectImage}
-							type="image"
-							value={attributes.imgID}
-							render={({ open }) => (
-								<Button
-									className="components-button button button-large"
-									onClick={open}
-								>
-									Open Media Library
-								</Button>
-							)}
-						/>
-					) : (
-						<div class="position--relative">
-							<img
-								class={imgClasses}
-								src={imgURL}
-								alt={imgAlt}
+			
+				<div className={className}
+					style={ { textAlign: blockAlignment } }>
+					<div className="feature__img mb1">
+						{!attributes.imgID ? (
+							<MediaUpload
+								onSelect={onSelectImage}
+								type="image"
+								value={attributes.imgID}
+								render={({ open }) => (
+									<Button
+										className="components-button button button-large"
+										onClick={open}
+									>
+										Open Media Library
+									</Button>
+								)}
 							/>
-							{props.focus ? (
-								<Button className="remove-image" onClick={ onRemoveImage }>
-									{icons.remove}
-								</Button>
-							) : null}
-						</div>
-					)}
-				</div>
-				<div className="feature__content">
-					<RichText
-						tagName="h3"
-						placeholder={__("Feature title")}
-						onChange={onChangeTitle}
-						value={attributes.title}
-						focus={focusedEditable === "title"}
-						onFocus={onFocusTitle}
-					/>
-
-					<div className="feature__description">
+						) : (
+							<div class="position--relative">
+								<img
+									class={imgClasses}
+									src={imgURL}
+									alt={imgAlt}
+								/>
+								{props.focus ? (
+									<Button className="remove-image" onClick={ onRemoveImage }>
+										{icons.remove}
+									</Button>
+								) : null}
+							</div>
+						)}
+					</div>
+					<div className="feature__content">
 						<RichText
-							tagName="div"
-							multiline="p"
-							placeholder={__("Feature description")}
-							onChange={onChangeDescription}
-							value={attributes.description}
-							focus={focusedEditable === "description"}
-							onFocus={onFocusDescription}
+							tagName="h3"
+							placeholder={__("Feature title")}
+							onChange={onChangeTitle}
+							value={attributes.title}
+							focus={focusedEditable === "title"}
+							onFocus={onFocusTitle}
 						/>
-						<InnerBlocks />
-						<a href={ link } class="button w100 button--primary">
-							{ buttonText }
-						</a>
+
+						<div className="feature__description">
+							<RichText
+								tagName="div"
+								multiline="p"
+								placeholder={__("Feature description")}
+								onChange={onChangeDescription}
+								value={attributes.description}
+								focus={focusedEditable === "description"}
+								onFocus={onFocusDescription}
+							/>
+							<InnerBlocks />
+							<a href={ link } class="button w100 button--primary">
+								{ buttonText }
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>

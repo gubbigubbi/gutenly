@@ -108,32 +108,33 @@ registerBlockType("cgb/block-pdf-download", {
         // };
 
 		return [
-			!!props.focus && (
+			<div>
 				<Inspector
 					{ ...{ onChangeUrl, ...props } }
 				/>
-			),
-			<div className={props.className}>
-				<div className="pdf-download__content">
-					<RichText
-						tagName="h3"
-						placeholder={__("Add a title for the download")}
-						onChange={onChangeTitle}
-						value={attributes.title}
-						focus={focusedEditable === "title"}
-						onFocus={onFocusTitle}
-					/>
-
-					<div className="pdf-download__description">
+			
+				<div className={props.className}>
+					<div className="pdf-download__content">
 						<RichText
-							tagName="div"
-							multiline="p"
-							placeholder={__("Add a description for the pdf")}
-							onChange={onChangeDescription}
-							value={attributes.description}
-							focus={focusedEditable === "description"}
-							onFocus={onFocusDescription}
+							tagName="h3"
+							placeholder={__("Add a title for the download")}
+							onChange={onChangeTitle}
+							value={attributes.title}
+							focus={focusedEditable === "title"}
+							onFocus={onFocusTitle}
 						/>
+
+						<div className="pdf-download__description">
+							<RichText
+								tagName="div"
+								multiline="p"
+								placeholder={__("Add a description for the pdf")}
+								onChange={onChangeDescription}
+								value={attributes.description}
+								focus={focusedEditable === "description"}
+								onFocus={onFocusDescription}
+							/>
+						</div>
 					</div>
 				</div>
 			</div>

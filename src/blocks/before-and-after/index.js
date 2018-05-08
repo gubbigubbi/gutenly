@@ -96,7 +96,7 @@ registerBlockType("cgb/block-before-and-after", {
 		return [
 	
 			<div className={props.className}>
-                <div className="flex align--centre">
+        <div className="flex align--centre">
 					<div style={{
 						flex: 1,
 						display: 'flex',

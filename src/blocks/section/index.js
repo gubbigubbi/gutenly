@@ -98,39 +98,41 @@ registerBlockType("cgb/block-section", {
 			})
 		};
 
+		const { attributes: { alignment, sectionBackgroundColor, verticalPadding, topMargin, bottomMargin },x } = props;
+
 		return [
-			!!props.focus && (
+
+			<div>
 				<Inspector
-				  { ...{ 
-					  onChangePadding, 
-					  onChangeMarginTop, 
-					  onChangeMarginBottom, 
-					  onChangeSectionBackgroundColor, 
-					  onChangeSectionID,
+					{ ...{ 
+						onChangePadding, 
+						onChangeMarginTop, 
+						onChangeMarginBottom, 
+						onChangeSectionBackgroundColor, 
+						onChangeSectionID,
 					...props } }
 				/>
-			),
-			!!props.focus && (
 				<BlockControls key="controls">
 					<BlockAlignmentToolbar
-						value={props.attributes.alignment}
+						value={alignment}
 						onChange={updateAlignment}
 						controls={["full"]}
 					/>
 				</BlockControls>
-			),
-			<div
-				className="transition-all"
-				style={{
-					backgroundColor: props.attributes.sectionBackgroundColor,
-					paddingTop: props.attributes.verticalPadding + "rem",
-					paddingBottom: props.attributes.verticalPadding + "rem",
-					marginTop: props.attributes.topMargin + "rem",
-					marginBottom: props.attributes.bottomMargin + "rem"
-				}}
-			>
-				<div>
-					<InnerBlocks />
+			
+				<div 
+					className="transition-all"
+					style={{
+						backgroundColor: sectionBackgroundColor,
+						paddingTop: verticalPadding + "rem",
+						paddingBottom: verticalPadding + "rem",
+						marginTop: topMargin + "rem",
+						marginBottom: bottomMargin + "rem"
+					}}
+				>
+					<div>
+						<InnerBlocks />
+					</div>
 				</div>
 			</div>
 		];

@@ -11,7 +11,7 @@ import icons from "../icons";
 const { __ } = wp.i18n; // Import __() from wp.i18n
 const {
 	registerBlockType,
-	Editable,
+	RichText,
 	MediaUpload,
 	BlockControls,
 	InspectorControls
@@ -94,9 +94,6 @@ registerBlockType("cgb/block-team-member", {
 		const onChangeTitle = value => {
 			props.setAttributes({ title: value });
 		};
-		const onFocusTitle = focus => {
-			props.setFocus(_.extend({}, focus, { editable: "title" }));
-		};
 
 		const onChangeEmail = value => {
 			props.setAttributes({ email: value });
@@ -108,9 +105,6 @@ registerBlockType("cgb/block-team-member", {
 
 		const onChangeDescription = value => {
 			props.setAttributes({ description: value });
-		};
-		const onFocusDescription = focus => {
-			props.setFocus(_.extend({}, focus, { editable: "description" }));
 		};
 
 		const onSelectImage = img => {
@@ -135,7 +129,7 @@ registerBlockType("cgb/block-team-member", {
 		};
 
 		return [
-			!!props.focus && (
+			<div>
 				<InspectorControls key="inspector">
 					<PanelBody title={__("Contact Details")}>
 						<PanelRow>
@@ -154,61 +148,62 @@ registerBlockType("cgb/block-team-member", {
 						</PanelRow>
 					</PanelBody>
 				</InspectorControls>
-			),
-			<div className={props.className}>
-				<div className="team-member__img">
-					{!attributes.imgID ? (
-						<MediaUpload
-							onSelect={onSelectImage}
-							type="image"
-							value={attributes.imgID}
-							render={({ open }) => (
-								<Button
-									className="components-button button button-large"
-									onClick={open}
-								>
-									Open Media Library
-								</Button>
-							)}
-						/>
-					) : (
-						<div className="position-relative">
-							<img
-								className="image--circle"
-								src={attributes.imgURL}
-								alt={attributes.imgAlt}
+				
+				<div className={props.className}>
+					<div className="team-member__img">
+						{!attributes.imgID ? (
+							<MediaUpload
+								onSelect={onSelectImage}
+								type="image"
+								value={attributes.imgID}
+								render={({ open }) => (
+									<Button
+										className="components-button button button-large"
+										onClick={open}
+									>
+										Open Media Library
+									</Button>
+								)}
 							/>
-							{props.focus ? (
-								<Button className="remove-image" onClick={onRemoveImage}>
-									{icons.remove}
-								</Button>
-							) : null}
-						</div>
-					)}
-				</div>
-				<div className="team-member__content">
-					<Editable
-						tagName="h3"
-						placeholder={__("Add a title for the team member")}
-						onChange={onChangeTitle}
-						value={attributes.title}
-						focus={focusedEditable === "title"}
-						onFocus={onFocusTitle}
-					/>
-
-					<div className="team-member__description">
-						<Editable
-							tagName="div"
-							multiline="p"
-							placeholder={__("Add a description for the team member")}
-							onChange={onChangeDescription}
-							value={attributes.description}
-							focus={focusedEditable === "description"}
-							onFocus={onFocusDescription}
+						) : (
+							<div className="position-relative">
+								<img
+									className="image--circle"
+									src={attributes.imgURL}
+									alt={attributes.imgAlt}
+								/>
+								{props.focus ? (
+									<Button className="remove-image" onClick={onRemoveImage}>
+										{icons.remove}
+									</Button>
+								) : null}
+							</div>
+						)}
+					</div>
+					<div className="team-member__content">
+						<RichText
+							tagName="h3"
+							placeholder={__("Add a title for the team member")}
+							onChange={onChangeTitle}
+							value={attributes.title}
+							focus={focusedEditable === "title"}
+							
 						/>
-						<div class="row">
-							<div class="col-12 team-member__email">{attributes.email}</div>
-							<div class="col-12 team-member__phone">{attributes.phone}</div>
+
+						<div className="team-member__description">
+							<RichText
+								tagName="div"
+								multiline="p"
+								placeholder={__("Add a description for the team member")}
+								onChange={onChangeDescription}
+								value={attributes.description}
+								focus={focusedEditable === "description"}
+								
+							/>
+							<div class="row">
+								<div class="col-12 team-member__email">{attributes.email}</div>
+								<div class="col-12 team-member__phone">{attributes.phone}</div>
+							</div>
 						</div>
 					</div>
 				</div>
