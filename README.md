@@ -8,6 +8,7 @@ This project was bootstrapped with [Create Guten Block](https://github.com/ahmad
 * Section: a wrapper block for inner-blocks to create nice page builder like layouts
 * Feature list: a list of features with nice thumbnails
 * Team member: A beautiful team member card
+* PDF Download: A simple callout with a link to download a pdf
 
 Getting started:
 
