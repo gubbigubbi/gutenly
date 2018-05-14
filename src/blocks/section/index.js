@@ -125,7 +125,7 @@ registerBlockType("cgb/block-section", {
 					<BlockAlignmentToolbar
 						value={alignment}
 						onChange={updateAlignment}
-						controls={["full"]}
+						controls={["full", "wide"]}
 					/>
 				</BlockControls>
 			
@@ -158,28 +158,32 @@ registerBlockType("cgb/block-section", {
 	},
 
 	// The "save" property must be specified and must be a valid function.
-	save: function(props) {
+	save: props => {
 		const classes = classnames(
 			"transition-all",
 			props.attributes.alignment ? `align${props.attributes.alignment}` : null
 		);
 
+		// if it is wide or full show a container
+
 		const innerClasses = classnames(
-			props.attributes.alignment == "full" ? "container container-bd" : null
+			props.attributes.alignment == "wide" ? "container" : null
 		);
+
+		const { attributes: { id, sectionBackgroundColor, verticalPadding, horizontalPadding, topMargin, bottomMargin } } = props;
 
 		return (
 			<div
-				id={props.attributes.id}
+				id={id}
 				className={classes}
 				style={{
-					backgroundColor: props.attributes.sectionBackgroundColor,
-					paddingTop: props.attributes.verticalPadding + "rem",
-					paddingBottom: props.attributes.verticalPadding + "rem",
-					paddingLeft: props.attributes.horizontalPadding + "rem",
-					paddingRight: props.attributes.horizontalPadding + "rem",
-					marginTop: props.attributes.topMargin + "rem",
-					marginBottom: props.attributes.bottomMargin + "rem"
+					backgroundColor: sectionBackgroundColor,
+					paddingTop: verticalPadding + "rem",
+					paddingBottom: verticalPadding + "rem",
+					paddingLeft: horizontalPadding + "rem",
+					paddingRight: horizontalPadding + "rem",
+					marginTop: topMargin + "rem",
+					marginBottom: bottomMargin + "rem"
 				}}
 			>
 				<div className={innerClasses}>
