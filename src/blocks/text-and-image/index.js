@@ -108,21 +108,20 @@ registerBlockType( 'cgb/block-text-and-image', {
 				/>
 			
 				<div className={ props.className }>
-					{ !! props.focus && (
-						<BlockControls key="custom-controls">
-							<Toolbar className="components-toolbar">
-								<Tooltip text={ __( 'Switch image/text alignment' ) }>
-									<Button
-										className="components-button components-icon-button components-toolbar__control"
-										onClick={ toggleTextFirstAlignment }
-									>
-										<Dashicon icon="image-flip-horizontal" />
-									</Button>
-								</Tooltip>
-							</Toolbar>
-						</BlockControls>
-					) }
-
+					
+					<BlockControls key="custom-controls">
+						<Toolbar className="components-toolbar">
+							<Tooltip text={ __( 'Switch image/text alignment' ) }>
+								<Button
+									className="components-button components-icon-button components-toolbar__control"
+									onClick={ toggleTextFirstAlignment }
+								>
+									<Dashicon icon="image-flip-horizontal" />
+								</Button>
+							</Tooltip>
+						</Toolbar>
+					</BlockControls>
+					
 					<div
 						className="flex row"
 						style={ {
@@ -159,11 +158,11 @@ registerBlockType( 'cgb/block-text-and-image', {
 										src={ props.attributes.imgURL }
 										alt={ props.attributes.imgAlt }
 									/>
-									{ props.focus ? (
+								
 										<Button className="remove-image" onClick={ onRemoveImage }>
 											{ icons.remove }
 										</Button>
-									) : null }
+								
 								</div>
 							) }
 						</div>

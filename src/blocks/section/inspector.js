@@ -23,17 +23,26 @@ export default class Inspector extends Component {
 	}
 
 	render() {
+		const { attributes: { verticalPadding, horizontalPadding }, onChangeHorizontalPadding, onChangeVerticalPadding } = this.props;
 		return (
 	<InspectorControls key="inspector">
 	<PanelBody title={ __( 'Section Spacings' ) }>
-					<PanelRow>
-						<TextControl
-	label={ __( 'Vertical padding (rem)' ) }
-							value={ this.props.attributes.verticalPadding }
-							onChange={ this.props.onChangePadding }
-						/>
-					</PanelRow>
-	<PanelRow>
+		<PanelRow>
+			<TextControl
+				label={ __( 'Vertical padding (rem)' ) }
+				value={ verticalPadding }
+				onChange={ onChangeVerticalPadding }
+			/>
+		</PanelRow>
+		<PanelRow>
+			<TextControl
+				label={ __( 'Horizontal padding (rem)' ) }
+				value={ horizontalPadding }
+				onChange={ onChangeHorizontalPadding }
+				name="horizontalPadding"
+			/>
+		</PanelRow>
+		<PanelRow>
 	<TextControl
 							label={ __( 'Top Margin (rem)' ) }
 	value={ this.props.attributes.topMargin }

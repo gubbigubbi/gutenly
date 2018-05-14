@@ -48,6 +48,10 @@ registerBlockType("cgb/block-section", {
 			type: "number",
 			default: 1
 		},
+		horizontalPadding: {
+			type: "number",
+			default: 0			
+		},
 		topMargin: {
 			type: "number",
 			default: 0
@@ -70,8 +74,12 @@ registerBlockType("cgb/block-section", {
 
 	// The "edit" property must be a valid function.
 	edit: props => {
-		const onChangePadding = value => {
+		const onChangeVerticalPadding = value => {
 			props.setAttributes({ verticalPadding: value });
+		};
+
+		const onChangeHorizontalPadding = value => {
+			props.setAttributes({ horizontalPadding: value });
 		};
 
 		const onChangeMarginTop = value => {
@@ -98,14 +106,15 @@ registerBlockType("cgb/block-section", {
 			})
 		};
 
-		const { attributes: { alignment, sectionBackgroundColor, verticalPadding, topMargin, bottomMargin },x } = props;
+		const { attributes: { alignment, sectionBackgroundColor, verticalPadding, horizontalPadding, topMargin, bottomMargin }, x } = props;
 
 		return [
 
 			<div>
 				<Inspector
 					{ ...{ 
-						onChangePadding, 
+						onChangeVerticalPadding, 
+						onChangeHorizontalPadding,
 						onChangeMarginTop, 
 						onChangeMarginBottom, 
 						onChangeSectionBackgroundColor, 
@@ -126,6 +135,8 @@ registerBlockType("cgb/block-section", {
 						backgroundColor: sectionBackgroundColor,
 						paddingTop: verticalPadding + "rem",
 						paddingBottom: verticalPadding + "rem",
+						paddingLeft: horizontalPadding + "rem",
+						paddingRight: horizontalPadding + "rem",
 						marginTop: topMargin + "rem",
 						marginBottom: bottomMargin + "rem"
 					}}
@@ -165,6 +176,8 @@ registerBlockType("cgb/block-section", {
 					backgroundColor: props.attributes.sectionBackgroundColor,
 					paddingTop: props.attributes.verticalPadding + "rem",
 					paddingBottom: props.attributes.verticalPadding + "rem",
+					paddingLeft: props.attributes.horizontalPadding + "rem",
+					paddingRight: props.attributes.horizontalPadding + "rem",
 					marginTop: props.attributes.topMargin + "rem",
 					marginBottom: props.attributes.bottomMargin + "rem"
 				}}

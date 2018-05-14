@@ -121,11 +121,11 @@ registerBlockType("cgb/block-before-and-after", {
 								<img
 									src={props.attributes.beforeImgURL}
 								/>
-								{props.focus ? (
+								
 									<Button className="remove-image" onClick={onRemoveBeforeImage}>
 										{icons.remove}
 									</Button>
-								) : null}
+								
 							</div>
 						)}
 					</div>
@@ -154,11 +154,11 @@ registerBlockType("cgb/block-before-and-after", {
 								<img
 									src={props.attributes.afterImgURL}
 								/>
-								{props.focus ? (
+								
 									<Button className="remove-image" onClick={onRemoveAfterImage}>
 										{icons.remove}
 									</Button>
-								) : null}
+								
 							</div>
 						)}
 					</div>
