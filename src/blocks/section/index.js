@@ -191,5 +191,6 @@ registerBlockType("cgb/block-section", {
 				</div>
 			</div>
 		);
-	}
+	},
+
 });
