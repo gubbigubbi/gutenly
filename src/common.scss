@@ -63,11 +63,14 @@ $team-member__img--width: 120px;
 
 .wp-block-cgb-block-pdf-download {
 	padding: 1rem;
-	
 	margin: 1rem 0;
 	background-color: #3ab4d2;
 	border-left: 5px solid darken(#3ab4d2, 10%);
-	float: left;
-	width: 100%;
-	h3, p { margin-bottom: 0; margin-top: 0; color: #fff; }
+	display: block;
+	h3,
+	p {
+		margin-bottom: 0;
+		margin-top: 0;
+		color: #fff;
+	}
 }

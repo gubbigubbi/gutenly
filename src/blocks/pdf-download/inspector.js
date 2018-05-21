@@ -3,43 +3,30 @@
  */
 const { __ } = wp.i18n;
 const { Component } = wp.element;
-const {
-	InspectorControls,
-	MediaUpload,
-	UrlInput,
-} = wp.blocks;
-const {
-	Toolbar,
-	Button,
-	PanelBody,
-	PanelRow,
-} = wp.components;
 
-import icons from '../icons';
+const { InspectorControls, UrlInput } = wp.editor;
+const { PanelBody, PanelRow } = wp.components;
 
 /**
  * Create an Inspector Controls wrapper Component
  */
 export default class Inspector extends Component {
-	constructor( props ) {
-		super( ...arguments );
+	constructor(props) {
+		super(...arguments);
 	}
 
 	render() {
-		const { attributes: { url }, onChangeUrl } = this.props;
+		const {
+			attributes: { url },
+			onChangeUrl,
+		} = this.props;
 		return (
-			
 			<InspectorControls key="inspector">
-				<PanelBody title={ __( 'PDF Options' ) }>
+				<PanelBody title={__('PDF Options')}>
 					<PanelRow>
+						<UrlInput className="url" value={url} onChange={onChangeUrl} />
 
-						<UrlInput
-							className="url"
-							value={ url }
-							onChange={ onChangeUrl }
-						/>
-
-	{ /* {!this.props.attributes.imgID ? (
+						{/* {!this.props.attributes.imgID ? (
                         <MediaUpload
                             onSelect={this.props.onSelectImage}
                             type="image"
@@ -66,8 +53,7 @@ export default class Inspector extends Component {
 								</Button>
 							) : null}
 						</div>
-					)} */ }
-
+					)} */}
 					</PanelRow>
 				</PanelBody>
 			</InspectorControls>

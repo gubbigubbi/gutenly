@@ -69,7 +69,7 @@ const attributes = {
 registerBlockType('cgb/block-text-and-image', {
 	// Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
 	title: __('Text & Image'), // Block title.
-	icon: 'image-flip-horizontal', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
+	icon: 'id', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
 	category: 'common', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
 	keywords: [__('text-and-image — CGB Block'), __('Text and Image')],
 	attributes,
