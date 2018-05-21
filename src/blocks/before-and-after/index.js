@@ -7,24 +7,17 @@
 /**
  * Block Dependencies
  */
-import icons from "../icons";
+import icons from '../icons';
 /**
  * Internal block libraries
  */
 
 const { __ } = wp.i18n; // Import __() from wp.i18n
-const {
-	registerBlockType,
-	MediaUpload,
-	BlockControls,
-	InnerBlocks,
-} = wp.blocks; 
-const {
-	Button,
-	Toolbar,
-	Tooltip,
-	Dashicon,
-} = wp.components;
+const { registerBlockType } = wp.blocks;
+
+const { MediaUpload } = wp.editor;
+
+const { Button } = wp.components;
 /**
  * Register: aa Gutenberg Block.
  *
@@ -37,71 +30,65 @@ const {
  * @return {?WPBlock}          The block, if it has been successfully
  *                             registered; otherwise `undefined`.
  */
-registerBlockType("cgb/block-before-and-after", {
-	
-	title: __("Before & After"), // Block title.
-	icon: "image-flip-horizontal", // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
-	category: "common", // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
-	keywords: [__("before-and-after — CGB Block"), __("Before & After")],
+registerBlockType('cgb/block-before-and-after', {
+	title: __('Before & After'), // Block title.
+	icon: 'image-flip-horizontal', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
+	category: 'common', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
+	keywords: [__('before-and-after — CGB Block'), __('Before & After')],
 	attributes: {
 		beforeImgURL: {
-			type: "string",
+			type: 'string',
 		},
 		beforeImgID: {
-			type: "number"
+			type: 'number',
 		},
 
 		afterImgURL: {
-			type: "string",
+			type: 'string',
 		},
 		afterImgID: {
-			type: "number"
+			type: 'number',
 		},
-
 	},
 
 	// The "edit" property must be a valid function.
 	edit: props => {
-
 		const onSelectBeforeImage = img => {
 			props.setAttributes({
 				beforeImgID: img.id,
 				beforeImgURL: img.url,
-
 			});
 		};
 		const onRemoveBeforeImage = () => {
 			props.setAttributes({
 				beforeImgID: null,
 				beforeImgURL: null,
-	
 			});
-        };
-        
+		};
+
 		const onSelectAfterImage = img => {
 			props.setAttributes({
 				afterImgID: img.id,
 				afterImgURL: img.url,
-
 			});
 		};
 		const onRemoveAfterImage = () => {
 			props.setAttributes({
 				afterImgID: null,
 				afterImgURL: null,
-
 			});
 		};
 
 		return [
-	
 			<div className={props.className}>
-        <div className="flex align--centre">
-					<div style={{
-						flex: 1,
-						display: 'flex',
-						justifyContent: 'center'
-						}}>
+				<div className="flex align--centre">
+					<div
+						style={{
+							flex: 1,
+							display: 'flex',
+							justifyContent: 'center',
+						}}
+					>
 						{!props.attributes.beforeImgID ? (
 							<MediaUpload
 								onSelect={onSelectBeforeImage}
@@ -118,23 +105,22 @@ registerBlockType("cgb/block-before-and-after", {
 							/>
 						) : (
 							<div className="position-relative">
-								<img
-									src={props.attributes.beforeImgURL}
-								/>
-								
-									<Button className="remove-image" onClick={onRemoveBeforeImage}>
-										{icons.remove}
-									</Button>
-								
+								<img src={props.attributes.beforeImgURL} />
+
+								<Button className="remove-image" onClick={onRemoveBeforeImage}>
+									{icons.remove}
+								</Button>
 							</div>
 						)}
 					</div>
 
-					<div style={{
-						flex: 1,
-						display: 'flex',
-						justifyContent: 'center'
-					}}>
+					<div
+						style={{
+							flex: 1,
+							display: 'flex',
+							justifyContent: 'center',
+						}}
+					>
 						{!props.attributes.afterImgID ? (
 							<MediaUpload
 								onSelect={onSelectAfterImage}
@@ -151,41 +137,49 @@ registerBlockType("cgb/block-before-and-after", {
 							/>
 						) : (
 							<div className="position-relative">
-								<img
-									src={props.attributes.afterImgURL}
-								/>
-								
-									<Button className="remove-image" onClick={onRemoveAfterImage}>
-										{icons.remove}
-									</Button>
-								
+								<img src={props.attributes.afterImgURL} />
+
+								<Button className="remove-image" onClick={onRemoveAfterImage}>
+									{icons.remove}
+								</Button>
 							</div>
 						)}
 					</div>
-                </div>
-			</div>
+				</div>
+			</div>,
 		];
 	},
 
 	// The "save" property must be specified and must be a valid function.
 	save: function(props) {
-	
 		return (
 			<div className={props.className}>
-                <div className="be__container">
-                    <div id="be__comparison">
-                        <figure className="be__figure" style={{
-                          backgroundImage: `url( ${props.attributes.beforeImgURL} )`
-                        }}>
-                            <div className="be__handle"></div>
-                            <div className="be__divisor" style={{
-                                backgroundImage: `url( ${props.attributes.afterImgURL} )` 
-                            }} ></div>
-                        </figure>
-                        <input type="range" min="0" max="100" value="50" className="be__slider" />
-                    </div>
-                </div>
+				<div className="be__container">
+					<div id="be__comparison">
+						<figure
+							className="be__figure"
+							style={{
+								backgroundImage: `url( ${props.attributes.beforeImgURL} )`,
+							}}
+						>
+							<div className="be__handle" />
+							<div
+								className="be__divisor"
+								style={{
+									backgroundImage: `url( ${props.attributes.afterImgURL} )`,
+								}}
+							/>
+						</figure>
+						<input
+							type="range"
+							min="0"
+							max="100"
+							value="50"
+							className="be__slider"
+						/>
+					</div>
+				</div>
 			</div>
 		);
-	}
+	},
 });

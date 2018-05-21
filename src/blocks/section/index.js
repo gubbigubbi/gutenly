@@ -3,8 +3,7 @@
  *
  * Wrap another block in a section
  */
-import classnames from "classnames";
-import icons from "../icons";
+import classnames from 'classnames';
 import Inspector from './inspector';
 
 /**
@@ -14,17 +13,45 @@ import Inspector from './inspector';
 const { __ } = wp.i18n; // Import __() from wp.i18n
 const {
 	registerBlockType,
-	InnerBlocks,
-	InspectorControls,
-	BlockControls,
-	BlockDescription,
-	BlockAlignmentToolbar
 } = wp.blocks; // Import registerBlockType() from wp.blocks as well as Editable so we can use TinyMCE
+
 const {
-	TextControl,
-	Dashicon
-} = wp.components;
-const validAlignments = ["wide", "full"];
+	InnerBlocks,
+	BlockControls,
+	BlockAlignmentToolbar,
+} = wp.editor;
+
+const validAlignments = ['wide', 'full'];
+
+const attributes = {
+	verticalPadding: {
+		type: 'number',
+		default: 1,
+	},
+	horizontalPadding: {
+		type: 'number',
+		default: 0,
+	},
+	topMargin: {
+		type: 'number',
+		default: 0,
+	},
+	bottomMargin: {
+		type: 'number',
+		default: 1,
+	},
+	sectionBackgroundColor: {
+		type: 'string',
+		default: 'transparent',
+	},
+	alignment: {
+		type: 'string',
+	},
+	id: {
+		type: 'string',
+	},
+};
+
 /**
  * Register: aa Gutenberg Block.
  *
@@ -37,40 +64,13 @@ const validAlignments = ["wide", "full"];
  * @return {?WPBlock}          The block, if it has been successfully
  *                             registered; otherwise `undefined`.
  */
-registerBlockType("cgb/block-section", {
+registerBlockType('cgb/block-section', {
 	// Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
-	title: __("Section"), // Block title.
-	icon: "editor-table", // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
-	category: "common", // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
-	keywords: [__("team"), __("Section")],
-	attributes: {
-		verticalPadding: {
-			type: "number",
-			default: 1
-		},
-		horizontalPadding: {
-			type: "number",
-			default: 0			
-		},
-		topMargin: {
-			type: "number",
-			default: 0
-		},
-		bottomMargin: {
-			type: "number",
-			default: 1
-		},
-		sectionBackgroundColor: {
-			type: "string",
-			default: "transparent"
-		},
-		alignment: {
-			type: "string"
-		},
-		id: {
-			type: "string"
-		}
-	},
+	title: __('Section'), // Block title.
+	icon: 'editor-table', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
+	category: 'common', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
+	keywords: [__('team'), __('Section')],
+	attributes,
 
 	// The "edit" property must be a valid function.
 	edit: props => {
@@ -96,56 +96,65 @@ registerBlockType("cgb/block-section", {
 
 		const updateAlignment = nextAlign => {
 			props.setAttributes({
-				alignment: nextAlign
+				alignment: nextAlign,
 			});
 		};
 
 		const onChangeSectionID = value => {
 			props.setAttributes({
-				id: value
-			})
+				id: value,
+			});
 		};
 
-		const { attributes: { alignment, sectionBackgroundColor, verticalPadding, horizontalPadding, topMargin, bottomMargin }, x } = props;
+		const {
+			attributes: {
+				alignment,
+				sectionBackgroundColor,
+				verticalPadding,
+				horizontalPadding,
+				topMargin,
+				bottomMargin,
+			},
+		} = props;
 
 		return [
-
 			<div>
 				<Inspector
-					{ ...{ 
-						onChangeVerticalPadding, 
+					{...{
+						onChangeVerticalPadding,
 						onChangeHorizontalPadding,
-						onChangeMarginTop, 
-						onChangeMarginBottom, 
-						onChangeSectionBackgroundColor, 
+						onChangeMarginTop,
+						onChangeMarginBottom,
+						onChangeSectionBackgroundColor,
 						onChangeSectionID,
-					...props } }
+						...props,
+					}}
 				/>
 				<BlockControls key="controls">
 					<BlockAlignmentToolbar
 						value={alignment}
 						onChange={updateAlignment}
-						controls={["full", "wide"]}
+						controls={['full', 'wide']}
 					/>
 				</BlockControls>
-			
-				<div 
+
+				<div
 					className="transition-all"
 					style={{
 						backgroundColor: sectionBackgroundColor,
-						paddingTop: verticalPadding + "rem",
-						paddingBottom: verticalPadding + "rem",
-						paddingLeft: horizontalPadding + "rem",
-						paddingRight: horizontalPadding + "rem",
-						marginTop: topMargin + "rem",
-						marginBottom: bottomMargin + "rem"
+						paddingTop: verticalPadding + 'rem',
+						paddingBottom: verticalPadding + 'rem',
+						paddingLeft: horizontalPadding + 'rem',
+						paddingRight: horizontalPadding + 'rem',
+						marginTop: topMargin + 'rem',
+						marginBottom: bottomMargin + 'rem',
 					}}
 				>
 					<div>
 						<InnerBlocks />
 					</div>
 				</div>
-			</div>
+			</div>,
 		];
 	},
 
@@ -153,24 +162,33 @@ registerBlockType("cgb/block-section", {
 		const { alignment } = attributes;
 
 		if (-1 !== validAlignments.indexOf(alignment)) {
-			return { "data-align": alignment };
+			return { 'data-align': alignment };
 		}
 	},
 
 	// The "save" property must be specified and must be a valid function.
 	save: props => {
 		const classes = classnames(
-			"transition-all",
-			props.attributes.alignment ? `align${props.attributes.alignment}` : null
+			'transition-all',
+			props.attributes.alignment ? `align${props.attributes.alignment}` : null,
 		);
 
 		// if it is wide or full show a container
 
 		const innerClasses = classnames(
-			props.attributes.alignment == "wide" ? "container" : null
+			props.attributes.alignment == 'wide' ? 'container' : null,
 		);
 
-		const { attributes: { id, sectionBackgroundColor, verticalPadding, horizontalPadding, topMargin, bottomMargin } } = props;
+		const {
+			attributes: {
+				id,
+				sectionBackgroundColor,
+				verticalPadding,
+				horizontalPadding,
+				topMargin,
+				bottomMargin,
+			},
+		} = props;
 
 		return (
 			<div
@@ -178,12 +196,12 @@ registerBlockType("cgb/block-section", {
 				className={classes}
 				style={{
 					backgroundColor: sectionBackgroundColor,
-					paddingTop: verticalPadding + "rem",
-					paddingBottom: verticalPadding + "rem",
-					paddingLeft: horizontalPadding + "rem",
-					paddingRight: horizontalPadding + "rem",
-					marginTop: topMargin + "rem",
-					marginBottom: bottomMargin + "rem"
+					paddingTop: verticalPadding + 'rem',
+					paddingBottom: verticalPadding + 'rem',
+					paddingLeft: horizontalPadding + 'rem',
+					paddingRight: horizontalPadding + 'rem',
+					marginTop: topMargin + 'rem',
+					marginBottom: bottomMargin + 'rem',
 				}}
 			>
 				<div className={innerClasses}>
@@ -193,4 +211,54 @@ registerBlockType("cgb/block-section", {
 		);
 	},
 
+	deprecated: [
+		{
+			attributes,
+			save: props => {
+				const classes = classnames(
+					'transition-all',
+					props.attributes.alignment
+						? `align${props.attributes.alignment}`
+						: null,
+				);
+
+				// if it is wide or full show a container
+
+				const innerClasses = classnames(
+					props.attributes.alignment == 'wide' ? 'container' : null,
+				);
+
+				const {
+					attributes: {
+						id,
+						sectionBackgroundColor,
+						verticalPadding,
+						horizontalPadding,
+						topMargin,
+						bottomMargin,
+					},
+				} = props;
+
+				return (
+					<div
+						id={id}
+						className={classes}
+						style={{
+							backgroundColor: sectionBackgroundColor,
+							paddingTop: verticalPadding + 'rem',
+							paddingBottom: verticalPadding + 'rem',
+							paddingLeft: horizontalPadding + 'rem',
+							paddingRight: horizontalPadding + 'rem',
+							marginTop: topMargin + 'rem',
+							marginBottom: bottomMargin + 'rem',
+						}}
+					>
+						<div className={innerClasses}>
+							<InnerBlocks.Content />
+						</div>
+					</div>
+				);
+			},
+		},
+	],
 });
