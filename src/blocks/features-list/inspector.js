@@ -16,28 +16,41 @@ export default class Inspector extends Component {
 
 	render() {
 		const {
-			attributes: { link, buttonText, circularImg },
+			attributes: { link, buttonText, circularImg, showButton },
 			onChangeLink,
 			onChangeButtonText,
 			onChangeImgType,
+			onToggleButton,
 		} = this.props;
 		return (
 			<InspectorControls key="inspector">
-				<PanelBody title={__('Link Options')}>
+				<PanelBody title={__('Button Options')}>
 					<PanelRow>
-						<TextControl
-							label={__('Link URL')}
-							value={link}
-							onChange={onChangeLink}
+						<ToggleControl
+							label={__('Show Button?')}
+							checked={!!showButton}
+							onChange={onToggleButton}
 						/>
 					</PanelRow>
-					<PanelRow>
-						<TextControl
-							label={__('Link Text')}
-							value={buttonText}
-							onChange={onChangeButtonText}
-						/>
-					</PanelRow>
+
+					{showButton ? (
+						<div>
+							<PanelRow key="url">
+								<TextControl
+									label={__('Button URL')}
+									value={link}
+									onChange={onChangeLink}
+								/>
+							</PanelRow>
+							<PanelRow key="text">
+								<TextControl
+									label={__('Button Text')}
+									value={buttonText}
+									onChange={onChangeButtonText}
+								/>
+							</PanelRow>
+						</div>
+					) : null}
 				</PanelBody>
 				<PanelBody title={__('Image Options')}>
 					<PanelRow>

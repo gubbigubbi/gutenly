@@ -73,6 +73,10 @@ registerBlockType('cgb/block-feature', {
 			type: 'string',
 			default: '/contact',
 		},
+		showButton: {
+			type: 'boolean',
+			default: true,
+		},
 		buttonText: {
 			type: 'string',
 			default: 'Find out more',
@@ -99,51 +103,55 @@ registerBlockType('cgb/block-feature', {
 		const {
 			attributes: {
 				blockAlignment,
+				imgID,
 				imgURL,
 				imgAlt,
+				showButton,
 				buttonText,
+				title,
+				description,
 				link,
 				circularImg,
 			},
 			className,
+			setAttributes,
+			isSelected,
 		} = props;
 
-		const attributes = props.attributes;
-
-		const onChangeTitle = value => {
-			props.setAttributes({ title: value });
+		const onChangeTitle = title => {
+			setAttributes({ title });
 		};
 
-		const onChangeDescription = value => {
-			props.setAttributes({ description: value });
+		const onChangeDescription = description => {
+			setAttributes({ description });
 		};
 
 		const onSelectImage = img => {
 			let thumb = img.url;
 
-			props.setAttributes({
+			setAttributes({
 				imgID: img.id,
 				imgAlt: img.alt,
 			});
 
-			if (props.attributes.circularImg) {
+			if (circularImg) {
 				const image = new wp.api.models.Media({ id: img.id })
 					.fetch()
 					.done(res => {
 						thumb = res.media_details.sizes['thumbnail'].source_url;
-						props.setAttributes({
+						setAttributes({
 							imgURL: thumb,
 						});
 					});
 			} else {
-				props.setAttributes({
+				setAttributes({
 					imgURL: img.url,
 				});
 			}
 		};
 
 		const onRemoveImage = () => {
-			props.setAttributes({
+			setAttributes({
 				imgID: null,
 				imgURL: null,
 				imgAlt: null,
@@ -151,21 +159,25 @@ registerBlockType('cgb/block-feature', {
 		};
 
 		const onChangeLink = value => {
-			props.setAttributes({ link: value });
+			setAttributes({ link: value });
 		};
 
 		const onChangeButtonText = value => {
-			props.setAttributes({ buttonText: value });
+			setAttributes({ buttonText: value });
 		};
 
 		const updateAlignment = nextAlign => {
-			props.setAttributes({
+			setAttributes({
 				blockAlignment: nextAlign,
 			});
 		};
 
 		const onChangeImgType = value => {
-			props.setAttributes({ circularImg: value });
+			setAttributes({ circularImg: value });
+		};
+
+		const onToggleButton = () => {
+			setAttributes({ showButton: !showButton });
 		};
 
 		const imgClasses = classnames(
@@ -180,6 +192,7 @@ registerBlockType('cgb/block-feature', {
 						onChangeLink,
 						onChangeButtonText,
 						onChangeImgType,
+						onToggleButton,
 						...props,
 					}}
 				/>
@@ -194,11 +207,11 @@ registerBlockType('cgb/block-feature', {
 
 				<div className={className} style={{ textAlign: blockAlignment }}>
 					<div className="feature__img mb1">
-						{!attributes.imgID ? (
+						{!imgID ? (
 							<MediaUpload
 								onSelect={onSelectImage}
 								type="image"
-								value={attributes.imgID}
+								value={imgID}
 								render={({ open }) => (
 									<Button
 										className="components-button button button-large"
@@ -211,7 +224,7 @@ registerBlockType('cgb/block-feature', {
 						) : (
 							<div class="position--relative">
 								<img class={imgClasses} src={imgURL} alt={imgAlt} />
-								{props.focus ? (
+								{isSelected ? (
 									<Button className="remove-image" onClick={onRemoveImage}>
 										{icons.remove}
 									</Button>
@@ -224,7 +237,7 @@ registerBlockType('cgb/block-feature', {
 							tagName="h3"
 							placeholder={__('Feature title')}
 							onChange={onChangeTitle}
-							value={attributes.title}
+							value={title}
 						/>
 
 						<div className="feature__description">
@@ -233,12 +246,14 @@ registerBlockType('cgb/block-feature', {
 								multiline="p"
 								placeholder={__('Feature description')}
 								onChange={onChangeDescription}
-								value={attributes.description}
+								value={description}
 							/>
 							<InnerBlocks />
-							<a href={link} class="button w100 button--primary">
-								{buttonText}
-							</a>
+							{showButton ? (
+								<a href={link} class="button w100 button--primary">
+									{buttonText}
+								</a>
+							) : null}
 						</div>
 					</div>
 				</div>
@@ -257,6 +272,7 @@ registerBlockType('cgb/block-feature', {
 				description,
 				buttonText,
 				link,
+				showButton,
 			},
 			classNames,
 		} = props;
@@ -276,9 +292,11 @@ registerBlockType('cgb/block-feature', {
 					<h3 className="feature__title">{title}</h3>
 					<div className="feature__description">{description}</div>
 					<InnerBlocks.Content />
-					<a href={link} class="button button--primary">
-						{buttonText}
-					</a>
+					{showButton ? (
+						<a href={link} class="button button--primary">
+							{buttonText}
+						</a>
+					) : null}
 				</div>
 			</div>
 		);
