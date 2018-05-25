@@ -4,14 +4,6 @@
  * Can include things like variables and mixins
  * that are used across the project.
 */
-
-// Colors.
-$black: rgb(41, 41, 41);
-$white: #f4f4f4;
-$gray: #dedede;
-$green: #bada55;
-$red: orangered;
-
 $grid-gutter-width: 20px;
 
 .mt0 {
@@ -29,6 +21,9 @@ $grid-gutter-width: 20px;
 }
 .position-relative {
 	position: relative;
+}
+.overflow-hidden {
+	overflow: hidden;
 }
 
 .box-shadow {
@@ -72,5 +67,25 @@ $team-member__img--width: 120px;
 		margin-bottom: 0;
 		margin-top: 0;
 		color: #fff;
+	}
+}
+
+/**
+* Feature Block
+**/
+
+.wp-block-cgb-block-feature {
+	&.block {
+		.feature__content {
+			// display: flex;
+			// flex-direction: column;
+			// position: absolute;
+			// align-items: center;
+			// justify-content: center;
+			top: 0;
+			bottom: 0;
+			padding: 1rem;
+			width: 100%;
+		}
 	}
 }

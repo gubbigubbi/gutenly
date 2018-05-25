@@ -9,7 +9,7 @@
 body.gutenberg-editor-page .editor-post-title,
 body.gutenberg-editor-page .editor-default-block-appender,
 body.gutenberg-editor-page .editor-block-list__block {
-    max-width: 940px;
+	max-width: 940px;
 }
 
 .image--circle {
@@ -37,9 +37,6 @@ button {
 	}
 }
 
-.wp-block-cgb-block-text-and-image {
-}
-
 .team-member__content {
 	background-color: #f9f9f9;
 }
@@ -54,4 +51,24 @@ button {
 .center-block {
 	display: block;
 	margin: 0 auto;
+}
+
+/**
+* Feature Block
+**/
+.wp-block-cgb-block-feature {
+	&.block {
+		.remove-image {
+			z-index: 999;
+		}
+		.feature__content.has-image {
+			position: absolute;
+		}
+		.image-wrapper {
+			margin: 0;
+			img {
+				width: 100%;
+			}
+		}
+	}
 }

@@ -66,12 +66,12 @@ const attributes = {
  * @return {?WPBlock}          The block, if it has been successfully
  *                             registered; otherwise `undefined`.
  */
-registerBlockType('cgb/block-text-and-image', {
+registerBlockType( 'cgb/block-text-and-image', {
 	// Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
-	title: __('Text & Image'), // Block title.
+	title: __( 'Text & Image' ), // Block title.
 	icon: 'id', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
 	category: 'common', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
-	keywords: [__('text-and-image — CGB Block'), __('Text and Image')],
+	keywords: [ __( 'text-and-image — CGB Block' ), __( 'Text and Image' ) ],
 	attributes,
 
 	// The "edit" property must be a valid function.
@@ -91,47 +91,47 @@ registerBlockType('cgb/block-text-and-image', {
 		} = props;
 
 		const onSelectImage = img => {
-			setAttributes({
+			setAttributes( {
 				imgID: img.id,
 				imgURL: img.url,
 				imgAlt: img.alt,
-			});
+			} );
 		};
 		const onRemoveImage = () => {
-			setAttributes({
+			setAttributes( {
 				imgID: null,
 				imgURL: null,
 				imgAlt: null,
-			});
+			} );
 		};
 		const toggleTextFirstAlignment = () => {
-			setAttributes({
-				textFirstAlignment: !textFirstAlignment,
-			});
+			setAttributes( {
+				textFirstAlignment: ! textFirstAlignment,
+			} );
 		};
 		const onChangeColumnWidth = value => {
-			setAttributes({
+			setAttributes( {
 				columnWidth: value,
-			});
+			} );
 		};
 
 		const onChangeImgExtension = value => {
-			setAttributes({ imgExtension: value });
+			setAttributes( { imgExtension: value } );
 		};
 
 		return [
 			<div key="first">
 				<Inspector
-					{...{ onChangeColumnWidth, onChangeImgExtension, ...props }}
+					{ ...{ onChangeColumnWidth, onChangeImgExtension, ...props } }
 				/>
 
-				<div className={className}>
+				<div className={ className }>
 					<BlockControls key="custom-controls">
 						<Toolbar className="components-toolbar">
-							<Tooltip text={__('Switch image/text alignment')}>
+							<Tooltip text={ __( 'Switch image/text alignment' ) }>
 								<Button
 									className="components-button components-icon-button components-toolbar__control"
-									onClick={toggleTextFirstAlignment}
+									onClick={ toggleTextFirstAlignment }
 								>
 									<Dashicon icon="image-flip-horizontal" />
 								</Button>
@@ -141,60 +141,60 @@ registerBlockType('cgb/block-text-and-image', {
 
 					<div
 						className="flex row"
-						style={{
+						style={ {
 							flexDirection: textFirstAlignment ? 'row-reverse' : 'row',
-						}}
+						} }
 					>
 						<div
 							className="message-body"
-							style={{
+							style={ {
 								width: columnWidth + '%',
-							}}
+							} }
 						>
 							<InnerBlocks />
 						</div>
 						<div
-							style={{
+							style={ {
 								flex: 1,
-							}}
+							} }
 						>
-							{!imgID ? (
+							{ ! imgID ? (
 								<MediaUpload
-									onSelect={onSelectImage}
+									onSelect={ onSelectImage }
 									type="image"
-									value={imgID}
-									render={({ open }) => (
+									value={ imgID }
+									render={ ( { open } ) => (
 										<Button
 											className="components-button button button-large"
-											onClick={open}
+											onClick={ open }
 										>
 											Open Media Library
 										</Button>
-									)}
+									) }
 								/>
 							) : (
 								<div
 									className="position-relative"
-									style={{
+									style={ {
 										marginRight:
-											imgExtension && !textFirstAlignment
-												? 'calc(50% - 50vw)'
-												: '',
+											imgExtension && ! textFirstAlignment ?
+												'calc(50% - 50vw)' :
+												'',
 										marginLeft:
-											imgExtension && textFirstAlignment
-												? 'calc(50% - 50vw)'
-												: '',
-									}}
+											imgExtension && textFirstAlignment ?
+												'calc(50% - 50vw)' :
+												'',
+									} }
 								>
-									<img src={imgURL} alt={imgAlt} />
+									<img src={ imgURL } alt={ imgAlt } />
 
-									{isSelected ? (
-										<Button className="remove-image" onClick={onRemoveImage}>
-											{icons.remove}
+									{ isSelected ? (
+										<Button className="remove-image" onClick={ onRemoveImage }>
+											{ icons.remove }
 										</Button>
-									) : null}
+									) : null }
 								</div>
-							)}
+							) }
 						</div>
 					</div>
 				</div>
@@ -203,10 +203,10 @@ registerBlockType('cgb/block-text-and-image', {
 	},
 
 	// The "save" property must be specified and must be a valid function.
-	save: function(props) {
-		const colOrder = props.attributes.textFirstAlignment
-			? 'row-reverse'
-			: 'row';
+	save: function( props ) {
+		const colOrder = props.attributes.textFirstAlignment ?
+			'row-reverse' :
+			'row';
 
 		const {
 			attributes: {
@@ -220,30 +220,30 @@ registerBlockType('cgb/block-text-and-image', {
 		} = props;
 
 		return (
-			<div className={className}>
-				<div className="flex row" style={{ flexDirection: colOrder }}>
+			<div className={ className }>
+				<div className="flex row" style={ { flexDirection: colOrder } }>
 					<div
 						className="message-body"
-						style={{
+						style={ {
 							width: columnWidth + '%',
-						}}
+						} }
 					>
 						<InnerBlocks.Content />
 					</div>
 					<div
 						className="image-wrapper"
-						style={{
+						style={ {
 							flex: 1,
 
 							marginRight:
-								imgExtension && !textFirstAlignment ? 'calc(50% - 50vw)' : '',
-							paddingRight: imgExtension && !textFirstAlignment ? '0' : '',
+								imgExtension && ! textFirstAlignment ? 'calc(50% - 50vw)' : '',
+							paddingRight: imgExtension && ! textFirstAlignment ? '0' : '',
 							marginLeft:
 								imgExtension && textFirstAlignment ? 'calc(50% - 50vw)' : '',
 							paddingLeft: imgExtension && textFirstAlignment ? '0' : '',
-						}}
+						} }
 					>
-						<img src={imgURL} alt={imgAlt} />
+						<img src={ imgURL } alt={ imgAlt } />
 					</div>
 				</div>
 			</div>
@@ -253,30 +253,30 @@ registerBlockType('cgb/block-text-and-image', {
 	deprecated: [
 		{
 			attributes,
-			save: function(props) {
-				const colOrder = props.attributes.textFirstAlignment
-					? 'row-reverse'
-					: 'row';
+			save: function( props ) {
+				const colOrder = props.attributes.textFirstAlignment ?
+					'row-reverse' :
+					'row';
 				return (
-					<div className={props.className}>
-						<div className="flex row" style={{ flexDirection: colOrder }}>
+					<div className={ props.className }>
+						<div className="flex row" style={ { flexDirection: colOrder } }>
 							<div
 								className="message-body"
-								style={{
+								style={ {
 									width: props.attributes.columnWidth + '%',
-								}}
+								} }
 							>
 								<InnerBlocks.Content />
 							</div>
 							<div
 								className="image-wrapper"
-								style={{
+								style={ {
 									flex: 1,
-								}}
+								} }
 							>
 								<img
-									src={props.attributes.imgURL}
-									alt={props.attributes.imgAlt}
+									src={ props.attributes.imgURL }
+									alt={ props.attributes.imgAlt }
 								/>
 							</div>
 						</div>
@@ -285,4 +285,4 @@ registerBlockType('cgb/block-text-and-image', {
 			},
 		},
 	],
-});
+} );
