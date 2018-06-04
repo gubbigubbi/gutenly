@@ -53,6 +53,7 @@ export default class FeatureBlock extends Component {
 			onChangeTitle,
 			onChangeDescription,
 			isSelected,
+			children
 		} = this.props;
 
 		const contentClass = classnames(
@@ -114,7 +115,7 @@ export default class FeatureBlock extends Component {
 							onChange={ onChangeDescription }
 							value={ description }
 						/>
-						<InnerBlocks />
+						{ children }
 						{ showButton ? (
 							<a href={ link } className="button w100 button--primary">
 								{ buttonText }

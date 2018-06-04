@@ -30,6 +30,7 @@ export default class ListBlock extends Component {
 			onChangeTitle,
 			onChangeDescription,
 			isSelected,
+			children,
 		} = this.props;
 
 		return (
@@ -77,7 +78,7 @@ export default class ListBlock extends Component {
 							onChange={ onChangeDescription }
 							value={ description }
 						/>
-						<InnerBlocks />
+						{ children }
 						{ showButton ? (
 							<a href={ link } className="button w100 button--primary">
 								{ buttonText }

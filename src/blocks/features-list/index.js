@@ -21,6 +21,8 @@ const { Button, Toolbar, Tooltip, Dashicon } = wp.components;
 import Inspector from './editor/inspector';
 import FeatureBlock from './editor/featureBlock';
 import ListBlock from './editor/listBlock';
+import FeatureBlockOutput from './output/feature';
+import ListBlockOutput from './output/list';
 import * as constants from './constants';
 /**
  * Register: aa Gutenberg Block.
@@ -124,7 +126,7 @@ registerBlockType( 'cgb/block-feature', {
 		};
 
 		const onChangeTextColor = textColor => {
-			console.log(textColor);
+			console.log( textColor );
 			setAttributes( { textColor } );
 		};
 
@@ -215,7 +217,9 @@ registerBlockType( 'cgb/block-feature', {
 								imgClasses,
 								...props,
 							} }
-						/>
+						>
+							<InnerBlocks />
+						</ListBlock>
 					) : (
 						<FeatureBlock
 							{ ...{
@@ -226,7 +230,9 @@ registerBlockType( 'cgb/block-feature', {
 								imgClasses,
 								...props,
 							} }
-						/>
+						>
+							<InnerBlocks />
+						</FeatureBlock>
 					) }
 				</div>
 			</div>,
@@ -236,40 +242,31 @@ registerBlockType( 'cgb/block-feature', {
 	// The "save" property must be specified and must be a valid function.
 	save: function( props ) {
 		const {
-			attributes: {
-				blockAlignment,
-				imgURL,
-				imgAlt,
-				title,
-				description,
-				buttonText,
-				link,
-				showButton,
-			},
-			classNames,
+			attributes: { type, blockAlignment },
+			className,
 		} = props;
 
-		const classes = classnames(
-			classNames,
-			blockAlignment ? `flex--align${ blockAlignment }` : null
-		);
+		const blockClasses = classnames( 'output', className, type );
 
 		return (
-			<div className={ classes } style={ { textAlign: blockAlignment } }>
-				<div className="featured__image-wrapper">
-					<img className="image--circle" src={ imgURL } alt={ imgAlt } />
-				</div>
-
-				<div className="feature__content">
-					<h3 className="feature__title">{ title }</h3>
-					<div className="feature__description">{ description }</div>
-					<InnerBlocks.Content />
-					{ showButton ? (
-						<a href={ link } className="button button--primary">
-							{ buttonText }
-						</a>
-					) : null }
-				</div>
+			<div className={ blockClasses } style={ { textAlign: blockAlignment } }>
+				{ type === 'list' ? (
+					<ListBlockOutput
+						{ ...{
+							...props,
+						} }
+					>
+						<InnerBlocks.Content />
+					</ListBlockOutput>
+				) : (
+					<FeatureBlockOutput
+						{ ...{
+							...props,
+						} }
+					>
+						<InnerBlocks.Content />
+					</FeatureBlockOutput>
+				) }
 			</div>
 		);
 	},

@@ -43,29 +43,30 @@
 	#be__comparison {
 		width: 100%;
 		padding-bottom: 100%;
-		overflow: hidden; 
+		overflow: hidden;
 		position: relative;
 	}
 
-	.be__figure { 
+	.be__figure {
 		position: absolute;
 		background-size: cover;
 		font-size: 0;
 		width: 100%;
 		height: 100%;
-		margin: 0; 
+		margin: 0;
 	}
 
-	.be__divisor { 
+	.be__divisor {
 		background-size: cover;
 		position: absolute;
-		width: 50%; 
-		box-shadow: 0 5px 10px -2px rgba(0,0,0,0.3);
-		bottom: 0; height: 100%;
+		width: 50%;
+		box-shadow: 0 5px 10px -2px rgba(0, 0, 0, 0.3);
+		bottom: 0;
+		height: 100%;
 
 		&::before,
 		&::after {
-		content: '';
+			content: '';
 			position: absolute;
 			right: -2px;
 			width: 4px;
@@ -75,14 +76,14 @@
 		}
 		&::before {
 			top: 0;
-			box-shadow: 0 -3px 8px 1px rgba(0,0,0,.3);
+			box-shadow: 0 -3px 8px 1px rgba(0, 0, 0, 0.3);
 		}
 		&::after {
 			bottom: 0;
-			box-shadow: 0 3px 8px 1px rgba(0,0,0,.3);
+			box-shadow: 0 3px 8px 1px rgba(0, 0, 0, 0.3);
 		}
 	}
-	
+
 	.be__handle {
 		position: absolute;
 		height: 50px;
@@ -94,7 +95,7 @@
 
 		&::before,
 		&::after {
-		content: '';
+			content: '';
 			width: 0;
 			height: 0;
 			border: 6px inset transparent;
@@ -114,14 +115,15 @@
 		}
 	}
 
-	input[type=range]{
-		-webkit-appearance:none;
-		-moz-appearance:none;
+	input[type='range'] {
+		-webkit-appearance: none;
+		-moz-appearance: none;
 		position: absolute;
-		top: 50%; left: -25px;
+		top: 50%;
+		left: -25px;
 		transform: translateY(-50%);
 		background-color: transparent;
-		width: calc(100% + 50px); 
+		width: calc(100% + 50px);
 		z-index: 2;
 
 		&:focus,
@@ -130,8 +132,8 @@
 			outline: none;
 		}
 	}
-	
-	input[type=range]::-webkit-slider-thumb {
+
+	input[type='range']::-webkit-slider-thumb {
 		-webkit-appearance: none;
 		border: none;
 		height: 50px;
@@ -139,14 +141,55 @@
 		border-radius: 50%;
 		background: transparent;
 		border: 4px solid white;
-		box-shadow: 0 0 8px 1px rgba(0,0,0,.3);
+		box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.3);
 	}
-	input[type=range]::-moz-range-track {
-		-moz-appearance:none;
-		height:15px;
+	input[type='range']::-moz-range-track {
+		-moz-appearance: none;
+		height: 15px;
 		width: 100%;
-		background-color: transparent; 
+		background-color: transparent;
 		position: relative;
-		outline: none;    
+		outline: none;
+	}
+}
+
+/**
+* Feature Block
+**/
+
+.wp-block-cgb-block-feature {
+	// in block mode
+	&.block {
+		.feature__content.has-image {
+			position: absolute;
+		}
+		.feature__content {
+			display: flex;
+			align-items: center;
+			flex-direction: column;
+			justify-content: center;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+		}
+		.image-wrapper {
+			margin: 0;
+			img {
+				width: 100%;
+				display: block;
+			}
+		}
+	}
+
+	// rendered - not editor
+	&.output {
+		.feature__content {
+			transform: translateY(100%);
+			transition: transform 0.3s ease-in-out;
+		}
+		&:hover .feature__content {
+			transform: translateY(0%);
+		}
 	}
 }

@@ -69,23 +69,3 @@ $team-member__img--width: 120px;
 		color: #fff;
 	}
 }
-
-/**
-* Feature Block
-**/
-
-.wp-block-cgb-block-feature {
-	&.block {
-		.feature__content {
-			// display: flex;
-			// flex-direction: column;
-			// position: absolute;
-			// align-items: center;
-			// justify-content: center;
-			top: 0;
-			bottom: 0;
-			padding: 1rem;
-			width: 100%;
-		}
-	}
-}
