@@ -71,16 +71,14 @@ export default class FeatureBlockOutput extends Component {
 						} }
 					>
 						<h3 className="feature__title">{ title }</h3>
+						<div className="feature__description">{ description }</div>
 
-						<div className="feature__description">
-							<div className="feature__description">{ description }</div>
-							{ children }
-							{ showButton ? (
-								<a href={ link } className="button button--primary">
-									{ buttonText }
-								</a>
-							) : null }
-						</div>
+						{ children }
+						{ showButton ? (
+							<a href={ link } className="button button--primary">
+								{ buttonText }
+							</a>
+						) : null }
 					</div>
 				</div>
 
