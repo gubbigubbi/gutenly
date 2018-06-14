@@ -195,3 +195,19 @@
 		}
 	}
 }
+
+/**
+* Section
+**/
+
+.wp-block-cgb-block-section {
+	display: flex;
+	justify-content: center;
+	clear: both;
+	width: 100%;
+	> div {
+		@media all and (max-width: 768px) {
+			max-width: 100% !important;
+		}
+	}
+}

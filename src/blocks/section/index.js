@@ -5,7 +5,7 @@
  */
 import classnames from 'classnames';
 import Inspector from './inspector';
-
+import ResizableBox from 're-resizable';
 /**
  * Internal block libraries
  */
@@ -43,6 +43,10 @@ const attributes = {
 	},
 	id: {
 		type: 'string',
+	},
+	maxWidth: {
+		type: 'number',
+		default: 100,
 	},
 };
 
@@ -100,6 +104,12 @@ registerBlockType( 'cgb/block-section', {
 			} );
 		};
 
+		const onChangeMaxWidth = maxWidth => {
+			props.setAttributes( { maxWidth } );
+		};
+
+		const classes = classnames( 'transition-all', props.className );
+
 		const {
 			attributes: {
 				alignment,
@@ -108,11 +118,14 @@ registerBlockType( 'cgb/block-section', {
 				horizontalPadding,
 				topMargin,
 				bottomMargin,
+				maxWidth,
 			},
+			setAttributes,
+			toggleSelection,
 		} = props;
 
 		return [
-			<div>
+			<div key="edit">
 				<Inspector
 					{ ...{
 						onChangeVerticalPadding,
@@ -121,6 +134,7 @@ registerBlockType( 'cgb/block-section', {
 						onChangeMarginBottom,
 						onChangeSectionBackgroundColor,
 						onChangeSectionID,
+						onChangeMaxWidth,
 						...props,
 					} }
 				/>
@@ -133,7 +147,7 @@ registerBlockType( 'cgb/block-section', {
 				</BlockControls>
 
 				<div
-					className="transition-all"
+					className={ classes }
 					style={ {
 						backgroundColor: sectionBackgroundColor,
 						paddingTop: verticalPadding + 'rem',
@@ -144,9 +158,38 @@ registerBlockType( 'cgb/block-section', {
 						marginBottom: bottomMargin + 'rem',
 					} }
 				>
-					<div>
+					<ResizableBox
+						size={ { width: maxWidth + '%' } }
+						minWidth="15%"
+						enable={ {
+							top: false,
+							right: true,
+							bottom: false,
+							left: true,
+							topRight: false,
+							bottomRight: false,
+							bottomLeft: false,
+							topLeft: false,
+						} }
+						handleClasses={ {
+							left: 'section-block__resize-handler-left',
+							right: 'section-block__resize-handler-right',
+						} }
+						onResizeStop={ ( event, direction, elt ) => {
+							setAttributes( {
+								maxWidth: Math.round(
+									parseInt( elt.style.width.replace( '%', '' ) )
+								),
+							} );
+
+							toggleSelection( true );
+						} }
+						onResizeStart={ () => {
+							toggleSelection( false );
+						} }
+					>
 						<InnerBlocks />
-					</div>
+					</ResizableBox>
 				</div>
 			</div>,
 		];
@@ -168,7 +211,6 @@ registerBlockType( 'cgb/block-section', {
 		);
 
 		// if it is wide or full show a container
-
 		const innerClasses = classnames(
 			props.attributes.alignment == 'wide' ? 'container' : null
 		);
@@ -181,6 +223,7 @@ registerBlockType( 'cgb/block-section', {
 				horizontalPadding,
 				topMargin,
 				bottomMargin,
+				maxWidth,
 			},
 		} = props;
 
@@ -198,7 +241,13 @@ registerBlockType( 'cgb/block-section', {
 					marginBottom: bottomMargin + 'rem',
 				} }
 			>
-				<div className={ innerClasses }>
+				<div
+					className={ innerClasses }
+					style={ {
+						maxWidth: maxWidth + '%', // note this will need to be overriden in the style
+						width: '100%',
+					} }
+				>
 					<InnerBlocks.Content />
 				</div>
 			</div>
@@ -208,6 +257,7 @@ registerBlockType( 'cgb/block-section', {
 	deprecated: [
 		{
 			attributes,
+
 			save: props => {
 				const classes = classnames(
 					'transition-all',
@@ -217,6 +267,52 @@ registerBlockType( 'cgb/block-section', {
 				);
 
 				// if it is wide or full show a container
+
+				const innerClasses = classnames(
+					props.attributes.alignment == 'wide' ? 'container' : null
+				);
+
+				const {
+					attributes: {
+						id,
+						sectionBackgroundColor,
+						verticalPadding,
+						horizontalPadding,
+						topMargin,
+						bottomMargin,
+					},
+				} = props;
+
+				return (
+					<div
+						id={ id }
+						className={ classes }
+						style={ {
+							backgroundColor: sectionBackgroundColor,
+							paddingTop: verticalPadding + 'rem',
+							paddingBottom: verticalPadding + 'rem',
+							paddingLeft: horizontalPadding + 'rem',
+							paddingRight: horizontalPadding + 'rem',
+							marginTop: topMargin + 'rem',
+							marginBottom: bottomMargin + 'rem',
+						} }
+					>
+						<div className={ innerClasses }>
+							<InnerBlocks.Content />
+						</div>
+					</div>
+				);
+			},
+		},
+		{
+			attributes,
+			save: props => {
+				const classes = classnames(
+					'transition-all',
+					props.attributes.alignment ?
+						`align${ props.attributes.alignment }` :
+						null
+				);
 
 				const innerClasses = classnames(
 					props.attributes.alignment == 'wide' ? 'container' : null

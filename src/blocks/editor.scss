@@ -82,3 +82,41 @@ button {
 		}
 	}
 }
+
+/**
+Section Block
+**/
+
+.editor-block-list__block[data-type='cgb/block-section'].is-selected
+	.editor-block-list__block-edit {
+	background: rgba(lightgray, 0.1);
+
+	.section-block__resize-handler-left,
+	.section-block__resize-handler-right {
+		display: block;
+	}
+}
+
+.section-block__resize-handler-left,
+.section-block__resize-handler-right {
+	display: none;
+	border-radius: 50%;
+	border: 2px solid white;
+	width: 15px !important;
+	height: 15px !important;
+	position: absolute;
+	background: lightblue;
+	padding: 0 3px 3px 0;
+	box-sizing: border-box;
+	cursor: se-resize;
+	top: 50% !important;
+	transform: translateY(-50%);
+}
+
+.section-block__resize-handler-left {
+	left: -7.5px !important;
+}
+
+.section-block__resize-handler-right {
+	right: -7.5px !important;
+}

@@ -8,10 +8,11 @@
     "eject": "cgb-scripts eject"
   },
   "dependencies": {
-    "cgb-scripts": "1.9.7",
+    "cgb-scripts": "^1.9.7",
     "classnames": "^2.2.5",
     "lodash": "^4.17.10",
     "memize": "^1.0.5",
-    "npm": "^5.10.0"
+    "npm": "^5.10.0",
+    "re-resizable": "^4.5.0"
   }
 }

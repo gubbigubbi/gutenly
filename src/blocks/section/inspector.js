@@ -4,7 +4,13 @@
 const { __ } = wp.i18n;
 const { Component } = wp.element;
 const { InspectorControls, ColorPalette } = wp.editor;
-const { PanelBody, PanelRow, PanelColor, TextControl } = wp.components;
+const {
+	PanelBody,
+	PanelRow,
+	PanelColor,
+	TextControl,
+	RangeControl,
+} = wp.components;
 
 /**
  * Create an Inspector Controls wrapper Component
@@ -16,9 +22,10 @@ export default class Inspector extends Component {
 
 	render() {
 		const {
-			attributes: { verticalPadding, horizontalPadding },
+			attributes: { verticalPadding, horizontalPadding, maxWidth },
 			onChangeHorizontalPadding,
 			onChangeVerticalPadding,
+			onChangeMaxWidth,
 		} = this.props;
 		return (
 			<InspectorControls key="inspector">
@@ -48,6 +55,14 @@ export default class Inspector extends Component {
 							onChange={ this.props.onChangeMarginBottom }
 						/>
 					</PanelRow>
+
+					<RangeControl
+						label={ __( 'Content Width (%)' ) }
+						value={ maxWidth }
+						min={ 15 }
+						max={ 100 }
+						onChange={ onChangeMaxWidth }
+					/>
 
 					<PanelColor
 						title={ __( 'Section Background Color' ) }
