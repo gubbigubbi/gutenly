@@ -26,6 +26,10 @@ const attributes = {
 		source: 'children',
 		selector: '.message-body',
 	},
+	verticalAlignCentre: {
+		type: 'boolean',
+		default: true,
+	},
 	imgURL: {
 		type: 'string',
 		source: 'attribute',
@@ -84,6 +88,7 @@ registerBlockType( 'cgb/block-text-and-image', {
 				textFirstAlignment,
 				imgExtension,
 				columnWidth,
+				verticalAlignCentre,
 			},
 			className,
 			setAttributes,
@@ -119,10 +124,19 @@ registerBlockType( 'cgb/block-text-and-image', {
 			setAttributes( { imgExtension: value } );
 		};
 
+		const onChangeVerticalAlign = value => {
+			setAttributes( { verticalAlignCentre: value } );
+		};
+
 		return [
 			<div key="first">
 				<Inspector
-					{ ...{ onChangeColumnWidth, onChangeImgExtension, ...props } }
+					{ ...{
+						onChangeColumnWidth,
+						onChangeImgExtension,
+						onChangeVerticalAlign,
+						...props,
+					} }
 				/>
 
 				<div className={ className }>
@@ -143,6 +157,7 @@ registerBlockType( 'cgb/block-text-and-image', {
 						className="flex row"
 						style={ {
 							flexDirection: textFirstAlignment ? 'row-reverse' : 'row',
+							alignItems: verticalAlignCentre ? 'center' : 'start',
 						} }
 					>
 						<div
@@ -215,13 +230,20 @@ registerBlockType( 'cgb/block-text-and-image', {
 				textFirstAlignment,
 				imgURL,
 				imgAlt,
+				verticalAlignCentre,
 			},
 			className,
 		} = props;
 
 		return (
 			<div className={ className }>
-				<div className="flex row" style={ { flexDirection: colOrder } }>
+				<div
+					className="flex row"
+					style={ {
+						flexDirection: colOrder,
+						alignItems: verticalAlignCentre ? 'center' : 'start',
+					} }
+				>
 					<div
 						className="message-body"
 						style={ {
