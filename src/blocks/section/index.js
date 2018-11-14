@@ -4,8 +4,9 @@
  * Wrap another block in a section
  */
 import classnames from 'classnames';
-import Inspector from './inspector';
-import ResizableBox from 're-resizable';
+import { attributes } from './attributes';
+
+import { default as edit } from './edit';
 /**
  * Internal block libraries
  */
@@ -13,42 +14,9 @@ import ResizableBox from 're-resizable';
 const { __ } = wp.i18n; // Import __() from wp.i18n
 const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks as well as Editable so we can use TinyMCE
 
-const { InnerBlocks, BlockControls, BlockAlignmentToolbar } = wp.editor;
+const { InnerBlocks } = wp.editor;
 
 const validAlignments = [ 'wide', 'full' ];
-
-const attributes = {
-	verticalPadding: {
-		type: 'number',
-		default: 1,
-	},
-	horizontalPadding: {
-		type: 'number',
-		default: 0,
-	},
-	topMargin: {
-		type: 'number',
-		default: 0,
-	},
-	bottomMargin: {
-		type: 'number',
-		default: 1,
-	},
-	sectionBackgroundColor: {
-		type: 'string',
-		default: 'transparent',
-	},
-	alignment: {
-		type: 'string',
-	},
-	id: {
-		type: 'string',
-	},
-	maxWidth: {
-		type: 'number',
-		default: 100,
-	},
-};
 
 /**
  * Register: aa Gutenberg Block.
@@ -67,133 +35,10 @@ registerBlockType( 'cgb/block-section', {
 	title: __( 'Section' ), // Block title.
 	icon: 'editor-table', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
 	category: 'common', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
-	keywords: [ __( 'team' ), __( 'Section' ) ],
+	keywords: [ __( 'Section' ) ],
 	attributes,
 
-	// The "edit" property must be a valid function.
-	edit: props => {
-		const onChangeVerticalPadding = value => {
-			props.setAttributes( { verticalPadding: value } );
-		};
-
-		const onChangeHorizontalPadding = value => {
-			props.setAttributes( { horizontalPadding: value } );
-		};
-
-		const onChangeMarginTop = value => {
-			props.setAttributes( { topMargin: value } );
-		};
-
-		const onChangeMarginBottom = value => {
-			props.setAttributes( { bottomMargin: value } );
-		};
-
-		const onChangeSectionBackgroundColor = value => {
-			props.setAttributes( { sectionBackgroundColor: value } );
-		};
-
-		const updateAlignment = nextAlign => {
-			props.setAttributes( {
-				alignment: nextAlign,
-			} );
-		};
-
-		const onChangeSectionID = value => {
-			props.setAttributes( {
-				id: value,
-			} );
-		};
-
-		const onChangeMaxWidth = maxWidth => {
-			props.setAttributes( { maxWidth } );
-		};
-
-		const classes = classnames( 'transition-all', props.className );
-
-		const {
-			attributes: {
-				alignment,
-				sectionBackgroundColor,
-				verticalPadding,
-				horizontalPadding,
-				topMargin,
-				bottomMargin,
-				maxWidth,
-			},
-			setAttributes,
-			toggleSelection,
-		} = props;
-
-		return [
-			<div key="edit">
-				<Inspector
-					{ ...{
-						onChangeVerticalPadding,
-						onChangeHorizontalPadding,
-						onChangeMarginTop,
-						onChangeMarginBottom,
-						onChangeSectionBackgroundColor,
-						onChangeSectionID,
-						onChangeMaxWidth,
-						...props,
-					} }
-				/>
-				<BlockControls key="controls">
-					<BlockAlignmentToolbar
-						value={ alignment }
-						onChange={ updateAlignment }
-						controls={ [ 'full', 'wide' ] }
-					/>
-				</BlockControls>
-
-				<div
-					className={ classes }
-					style={ {
-						backgroundColor: sectionBackgroundColor,
-						paddingTop: verticalPadding + 'rem',
-						paddingBottom: verticalPadding + 'rem',
-						paddingLeft: horizontalPadding + 'rem',
-						paddingRight: horizontalPadding + 'rem',
-						marginTop: topMargin + 'rem',
-						marginBottom: bottomMargin + 'rem',
-					} }
-				>
-					<ResizableBox
-						size={ { width: maxWidth + '%' } }
-						minWidth="15%"
-						enable={ {
-							top: false,
-							right: true,
-							bottom: false,
-							left: true,
-							topRight: false,
-							bottomRight: false,
-							bottomLeft: false,
-							topLeft: false,
-						} }
-						handleClasses={ {
-							left: 'section-block__resize-handler-left',
-							right: 'section-block__resize-handler-right',
-						} }
-						onResizeStop={ ( event, direction, elt ) => {
-							setAttributes( {
-								maxWidth: Math.round(
-									parseInt( elt.style.width.replace( '%', '' ) )
-								),
-							} );
-
-							toggleSelection( true );
-						} }
-						onResizeStart={ () => {
-							toggleSelection( false );
-						} }
-					>
-						<InnerBlocks />
-					</ResizableBox>
-				</div>
-			</div>,
-		];
-	},
+	edit,
 
 	getEditWrapperProps( attributes ) {
 		const { alignment } = attributes;

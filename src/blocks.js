@@ -13,17 +13,15 @@
 /**
  * Import common styles
  */
-import "./blocks/style.scss";
-import "./blocks/editor.scss";
+import './blocks/style.scss';
+import './blocks/editor.scss';
 
 /**
  * Import blocks
  */
-import "./blocks/text-and-image";
-import "./blocks/features-list";
-import "./blocks/team-member";
-import "./blocks/section";
-import "./blocks/before-and-after";
-import "./blocks/pdf-download";
-//import "./blocks/fancy-heading";
-
+import './blocks/text-and-image';
+import './blocks/features-list';
+import './blocks/team-member';
+import './blocks/section';
+import './blocks/before-and-after';
+import './blocks/pdf-download';
